@@ -268,6 +268,16 @@ function getEpisodeDetailTitleMarkup(episode) {
   return `<span class="episode-detail-number">#${rawId}</span><span class="episode-detail-title-text">${episode.title}</span>`;
 }
 
+function getEpisodePlayerTitleMarkup(episode) {
+  const rawId = String(episode.id || "").trim();
+
+  if (!rawId || rawId.toLowerCase() === "episode") {
+    return episode.title;
+  }
+
+  return `<span class="episode-player-number">#${rawId}</span><span class="episode-player-title-text">${episode.title}</span>`;
+}
+
 function renderLanding() {
   const episode = episodes[0];
   const playUrl = episode.audioUrl ? `#/episodes/${episode.slug}` : "#recent";
@@ -480,7 +490,7 @@ function renderEpisodeDetail(episode) {
               <button class="episode-player-toggle" type="button" aria-label="Play episode">Play</button>
               <div class="episode-player-copy">
                 <span class="episode-player-kicker">Audio</span>
-                <span class="episode-player-name">${getEpisodeDisplayLabel(episode)}</span>
+                <span class="episode-player-name">${getEpisodePlayerTitleMarkup(episode)}</span>
               </div>
               <div class="episode-player-time">
                 <span class="episode-player-current">0:00</span>
