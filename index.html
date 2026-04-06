@@ -6,12 +6,12 @@
     <title>Bloody Water Podcast</title>
     <meta
       name="description"
-      content="Bloody Water Podcast is your fight-night home for breakdowns, sharp angles, sleeper picks, and the full episode archive."
+      content="Bloody Water Podcast is your fight-week home for UFC breakdowns, sharp betting angles, sleeper picks, and the full episode archive."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Instrument+Serif:ital@0;1&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Syncopate:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
@@ -43,19 +43,19 @@
           <div class="hero-copy">
             <p class="eyebrow">Bloody Water Podcast</p>
             <h1>
-              Fight-week breakdowns, sharp reads, and the full Bloody Water archive.
+              Fight-week tape talk for people who want more than surface-level picks.
             </h1>
             <p class="hero-text">
-              Derick G and AJ Guillen bring betting angles, matchup context,
-              sleeper spots, and straight-up fight talk for the cards that
-              matter. This home page keeps the experience simple so the show,
-              the picks, and the archive stay front and center.
+              Derick G and AJ Guillen break down the matchups that matter with
+              betting angles, stylistic reads, live underdogs, and the kind of
+              fight talk you actually want in your ears before the card starts.
             </p>
             <div class="hero-actions">
-              <a class="hero-button hero-button-primary" href="#episodes">
-                Browse episodes
+              <a class="hero-button hero-button-primary" href="#listen">
+                Listen now
               </a>
-              <a class="hero-button" href="#about">About the show</a>
+              <a class="hero-button" href="#episodes">Browse archive</a>
+              <a class="hero-button" href="#about">Why Bloody Water</a>
             </div>
           </div>
 
@@ -69,11 +69,11 @@
             </div>
             <div class="hero-card-copy">
               <p class="card-label">Fight Week Starts Here</p>
-              <h2>The full Bloody Water identity, now leading the site.</h2>
+              <h2>From early reads to main-card conviction.</h2>
               <p>
-                Cleaner navigation, a stronger archive, and your actual brand
-                art give the show a home that feels more like Bloody Water and
-                less like a template.
+                The site now leads with the real Bloody Water identity and keeps
+                the latest episode, the archive, and the easiest listening
+                options one click away.
               </p>
             </div>
           </aside>
@@ -137,25 +137,46 @@
         </section>
 
         <section class="about-section" id="about">
-          <div>
+          <div class="about-copy">
             <p class="eyebrow">About</p>
-            <h2>The fight talk hub for independent thinkers</h2>
+            <h2>The fight show built for people who do their own homework.</h2>
+            <p>
+              Bloody Water Podcast is where film study, betting logic, and real
+              card-to-card context meet. The goal is simple: help listeners
+              understand the matchup, spot the value, and walk into fight night
+              sharper than the average timeline take.
+            </p>
           </div>
-          <p>
-            Bloody Water Podcast helps listeners get ready for fight night with
-            main-card breakdowns, betting insight, recap energy, and the
-            sleeper matchups worth your attention before the rest of the world
-            catches up.
-          </p>
+          <div class="about-points" aria-label="What Bloody Water covers">
+            <article class="about-point">
+              <span class="about-point-label">Breakdowns</span>
+              <p>Main-card previews, style clashes, and the spots most people skip.</p>
+            </article>
+            <article class="about-point">
+              <span class="about-point-label">Betting Insight</span>
+              <p>Angles, pricing context, and underdogs worth a second look before lock.</p>
+            </article>
+            <article class="about-point">
+              <span class="about-point-label">Archive</span>
+              <p>A growing library of episodes you can search any time the card starts heating up.</p>
+            </article>
+          </div>
         </section>
 
-        <section class="newsletter-section" id="listen">
+        <section class="listen-section" id="listen">
           <p class="eyebrow">Listen</p>
-          <h2>Tap into the show wherever you follow the card.</h2>
-          <form class="newsletter-form">
-            <input type="text" placeholder="Spotify, Apple Podcasts, RedCircle" />
-            <button type="button">Platform links live</button>
-          </form>
+          <h2>Tap in wherever you follow the fights.</h2>
+          <p class="listen-intro">
+            Start with the newest episode, or jump straight to Bloody Water on
+            your platform of choice.
+          </p>
+          <div class="listen-grid">
+            <div class="listen-card" id="latest-listen-card"></div>
+            <div class="listen-card">
+              <p class="card-label">Show Links</p>
+              <div class="show-links" id="show-links"></div>
+            </div>
+          </div>
         </section>
       </main>
     </div>

@@ -1,5 +1,20 @@
 const feedUrl = "https://feeds.redcircle.com/62a0c25c-90d4-44f5-bc2d-00adaec37398";
 const platformLinksUrl = "./data/platform-links.json";
+const showLinks = [
+  {
+    label: "Spotify",
+    href: "https://open.spotify.com/show/0GATqczYoMsnlcdYS1bvGX",
+    primary: true
+  },
+  {
+    label: "Apple Podcasts",
+    href: "https://podcasts.apple.com/us/podcast/bloody-water-podcast/id1554157578"
+  },
+  {
+    label: "YouTube",
+    href: "https://www.youtube.com/@BloodyWaterPodcast?sub_confirmation=1"
+  }
+];
 
 const fallbackEpisodes = [
   {
@@ -123,6 +138,8 @@ const detailCard = document.getElementById("episode-detail-card");
 const detailBack = document.getElementById("detail-back");
 const aboutSection = document.getElementById("about");
 const listenSection = document.getElementById("listen");
+const latestListenCard = document.getElementById("latest-listen-card");
+const showLinksContainer = document.getElementById("show-links");
 
 function renderRecentEpisode() {
   const episode = episodes[0];
@@ -160,6 +177,57 @@ function renderArchiveCards() {
     <div class="archive-card-meta">
       <span>${episode.date}</span>
       <span>${episode.length}</span>
+    </div>
+  `;
+}
+
+function renderShowLinks() {
+  showLinksContainer.innerHTML = showLinks
+    .map(
+      (link) => `
+        <a
+          class="show-link${link.primary ? " show-link-primary" : ""}"
+          href="${link.href}"
+          target="_blank"
+          rel="noreferrer"
+        >
+          ${link.label}
+        </a>
+      `
+    )
+    .join("");
+}
+
+function renderListenSection() {
+  const episode = episodes[0];
+  const primaryListenUrl = episode.spotifyUrl || episode.appleUrl || episode.externalLink || "#/episodes/${episode.slug}";
+  const primaryListenLabel = episode.spotifyUrl
+    ? "Listen on Spotify"
+    : episode.appleUrl
+      ? "Listen on Apple Podcasts"
+      : episode.externalLink
+        ? "Watch on YouTube"
+        : "Open episode";
+
+  latestListenCard.innerHTML = `
+    <p class="card-label">Latest Episode</p>
+    <h3 class="latest-listen-title">Episode ${episode.id}: ${episode.title}</h3>
+    <p class="latest-listen-summary">${episode.summary}</p>
+    <div class="latest-listen-meta">
+      <span>${episode.date}</span>
+      <span>${episode.length}</span>
+    </div>
+    <div class="listen-actions">
+      <a
+        class="listen-action listen-action-primary"
+        href="${primaryListenUrl}"
+        ${primaryListenUrl.startsWith("#") ? "" : 'target="_blank" rel="noreferrer"'}
+      >
+        ${primaryListenLabel}
+      </a>
+      <a class="listen-action" href="#/episodes/${episode.slug}">
+        Read episode page
+      </a>
     </div>
   `;
 }
@@ -240,6 +308,8 @@ searchInput.addEventListener("input", (event) => {
 renderRecentEpisode();
 renderArchiveCards();
 renderEpisodeList();
+renderShowLinks();
+renderListenSection();
 
 detailBack.addEventListener("click", () => {
   window.location.hash = "";
@@ -509,6 +579,7 @@ async function loadEpisodesFromFeed() {
     renderRecentEpisode();
     renderArchiveCards();
     renderEpisodeList(searchInput.value);
+    renderListenSection();
     renderRoute();
   } catch (error) {
     archiveStatus.textContent = "Live feed unavailable right now. Showing placeholder episodes.";
