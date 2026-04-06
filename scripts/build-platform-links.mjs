@@ -6,6 +6,8 @@ const appleShowUrl =
   "https://podcasts.apple.com/us/podcast/bloody-water-podcast/id1554157578";
 const spotifyShowUrl =
   "https://open.spotify.com/show/0GATqczYoMsnlcdYS1bvGX";
+const youtubeFeedUrl =
+  "https://www.youtube.com/feeds/videos.xml?channel_id=UC3n2yMqL5ZAHVR5-1FyN6IA";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
@@ -91,14 +93,41 @@ function parseSpotifyLinks(html) {
   return links;
 }
 
-function mergeLinks(appleLinks, spotifyLinks) {
-  const keys = new Set([...Object.keys(appleLinks), ...Object.keys(spotifyLinks)]);
+function parseYouTubeLinks(xml) {
+  const entryRegex = /<entry>([\s\S]*?)<\/entry>/g;
+  const links = {};
+  let entryMatch;
+
+  while ((entryMatch = entryRegex.exec(xml)) !== null) {
+    const entry = entryMatch[1];
+    const title = entry.match(/<title>([\s\S]*?)<\/title>/)?.[1];
+    const href = entry.match(/<link[^>]*rel="alternate"[^>]*href="([^"]+)"/)?.[1];
+
+    if (!title || !href || !/youtube\.com\/watch\?v=/i.test(href)) {
+      continue;
+    }
+
+    links[normalizeTitle(decodeHtml(title))] = {
+      youtubeUrl: href
+    };
+  }
+
+  return links;
+}
+
+function mergeLinks(appleLinks, spotifyLinks, youtubeLinks) {
+  const keys = new Set([
+    ...Object.keys(appleLinks),
+    ...Object.keys(spotifyLinks),
+    ...Object.keys(youtubeLinks)
+  ]);
   const merged = {};
 
   for (const key of keys) {
     merged[key] = {
       ...(appleLinks[key] ?? {}),
-      ...(spotifyLinks[key] ?? {})
+      ...(spotifyLinks[key] ?? {}),
+      ...(youtubeLinks[key] ?? {})
     };
   }
 
@@ -106,14 +135,16 @@ function mergeLinks(appleLinks, spotifyLinks) {
 }
 
 async function main() {
-  const [appleHtml, spotifyHtml] = await Promise.all([
+  const [appleHtml, spotifyHtml, youtubeXml] = await Promise.all([
     fetchText(appleShowUrl),
-    fetchText(spotifyShowUrl)
+    fetchText(spotifyShowUrl),
+    fetchText(youtubeFeedUrl)
   ]);
 
   const appleLinks = parseAppleLinks(appleHtml);
   const spotifyLinks = parseSpotifyLinks(spotifyHtml);
-  const merged = mergeLinks(appleLinks, spotifyLinks);
+  const youtubeLinks = parseYouTubeLinks(youtubeXml);
+  const merged = mergeLinks(appleLinks, spotifyLinks, youtubeLinks);
 
   await mkdir(dataDir, { recursive: true });
   await writeFile(outputPath, `${JSON.stringify(merged, null, 2)}\n`, "utf8");

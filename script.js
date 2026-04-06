@@ -279,7 +279,7 @@ function hasEpisodeDestination(episode, index) {
     return true;
   }
 
-  return Boolean(episode.spotifyUrl || episode.appleUrl);
+  return Boolean(episode.spotifyUrl || episode.appleUrl || getEpisodeYouTubeUrl(episode));
 }
 
 function getVisibleEpisodes() {
@@ -299,6 +299,10 @@ function buildArchiveIconLink(href, label, icon) {
 }
 
 function getEpisodeYouTubeUrl(episode) {
+  if (episode.youtubeUrl) {
+    return episode.youtubeUrl;
+  }
+
   return /youtube\.com|youtu\.be/i.test(episode.externalLink || "") ? episode.externalLink : "";
 }
 
@@ -314,8 +318,14 @@ function buildArchivePlatformMarkup(episode) {
       <path d="M11.98 0C5.37 0 0 5.37 0 11.98s5.37 11.98 11.98 11.98 11.98-5.37 11.98-11.98S18.6 0 11.98 0Zm0 21.96c-5.5 0-9.98-4.48-9.98-9.98S6.48 2 11.98 2s9.98 4.48 9.98 9.98-4.48 9.98-9.98 9.98Z"/>
     </svg>
   `;
+  const youtubeIcon = `
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M21.3 7.2a2.85 2.85 0 0 0-2-2c-1.77-.47-8.88-.47-8.88-.47s-7.1 0-8.88.47a2.85 2.85 0 0 0-2 2A29.7 29.7 0 0 0-.02 12a29.7 29.7 0 0 0 .46 4.8 2.85 2.85 0 0 0 2 2c1.78.47 8.88.47 8.88.47s7.11 0 8.88-.47a2.85 2.85 0 0 0 2-2 29.69 29.69 0 0 0 .47-4.8 29.69 29.69 0 0 0-.47-4.8ZM9.57 15.07V8.93L14.98 12l-5.41 3.07Z"/>
+    </svg>
+  `;
 
   return [
+    buildArchiveIconLink(getEpisodeYouTubeUrl(episode), "YouTube", youtubeIcon),
     buildArchiveIconLink(episode.appleUrl, "Apple Podcasts", appleIcon),
     buildArchiveIconLink(episode.spotifyUrl, "Spotify", spotifyIcon)
   ]
@@ -532,7 +542,8 @@ function mergePlatformLinks(episodeItems, linkMap) {
     return {
       ...episode,
       appleUrl: match.appleUrl || "",
-      spotifyUrl: match.spotifyUrl || ""
+      spotifyUrl: match.spotifyUrl || "",
+      youtubeUrl: match.youtubeUrl || ""
     };
   });
 }
