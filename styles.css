@@ -143,12 +143,14 @@ h2 {
 .landing-view {
   position: relative;
   overflow: hidden;
-  padding: 1rem 0 1.6rem;
+  padding: 1.4rem 0 2.1rem;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 22%),
-    linear-gradient(90deg, #262629 0%, #2d2d31 48%, #342e31 100%);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 24px;
+    radial-gradient(circle at top left, rgba(213, 123, 115, 0.28), transparent 28%),
+    radial-gradient(circle at 80% 20%, rgba(240, 192, 142, 0.16), transparent 26%),
+    linear-gradient(135deg, #18181a 0%, #202023 35%, #2a2526 68%, #121214 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 32px;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
 }
 
 .landing-view::after {
@@ -157,71 +159,126 @@ h2 {
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(90deg, transparent 0 68%, rgba(213, 123, 115, 0.12) 100%);
+    linear-gradient(115deg, transparent 18%, rgba(255, 255, 255, 0.04) 52%, transparent 72%),
+    linear-gradient(90deg, transparent 0 62%, rgba(213, 123, 115, 0.16) 100%);
 }
 
 .landing-view::before {
   content: "";
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 56%;
-  width: 1px;
-  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+  inset: auto -8% -30% auto;
+  width: 21rem;
+  height: 21rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(213, 123, 115, 0.28), rgba(213, 123, 115, 0));
+  filter: blur(8px);
   pointer-events: none;
 }
 
 .landing-inner {
   width: min(100%, 1080px);
   margin: 0 auto;
-  padding: 0.6rem 0 0;
+  padding: 0.9rem 0 0;
+  position: relative;
+  z-index: 1;
 }
 
 .landing-stage {
   justify-content: space-between;
   align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 1.15rem;
+  gap: 2rem;
+  margin-bottom: 1.7rem;
 }
 
 .landing-brand-block {
-  flex: 0 0 min(42%, 360px);
+  flex: 0 0 min(42%, 380px);
 }
 
 .landing-logo {
   display: block;
   width: 100%;
-  max-width: 180px;
-  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.2));
+  max-width: 230px;
+  filter: drop-shadow(0 22px 48px rgba(0, 0, 0, 0.34));
 }
 
 .landing-copy {
   flex: 1;
-  max-width: 22rem;
+  max-width: 37rem;
 }
 
 .landing-headline {
   margin: 0 0 1rem;
   font-family: var(--font-body);
-  font-size: clamp(1.1rem, 2vw, 1.85rem);
-  font-weight: 500;
-  line-height: 1.04;
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  font-weight: 700;
+  line-height: 0.92;
   text-transform: none;
   letter-spacing: -0.04em;
+  text-wrap: balance;
 }
 
 .landing-summary {
   margin: 0;
-  max-width: 24rem;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 0.82rem;
-  line-height: 1.5;
+  max-width: 31rem;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.platform-cta-band {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.platform-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 132px;
+  padding: 1.35rem 1.25rem;
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    rgba(12, 12, 14, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.platform-cta:hover,
+.platform-cta:focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.2);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)),
+    rgba(14, 14, 17, 0.82);
+}
+
+.platform-cta-badge {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 260px;
+}
+
+.platform-cta-badge-youtube {
+  max-width: 236px;
+}
+
+.platform-cta-badge-spotify {
+  max-width: 196px;
+}
+
+.platform-cta-badge-apple {
+  max-width: 240px;
 }
 
 .entry-grid {
   justify-content: space-between;
   align-items: stretch;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .entry-card {
@@ -231,29 +288,30 @@ h2 {
   gap: 1rem;
   flex: 0 0 52%;
   width: auto;
-  min-height: 160px;
-  padding: 1.35rem 1.6rem 1.1rem;
-  border-radius: 12px;
-  background: rgba(31, 31, 34, 0.98);
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.14);
-  transition: transform 180ms ease, background 180ms ease;
+  min-height: 146px;
+  padding: 1.15rem 1.3rem 1rem;
+  border-radius: 18px;
+  background: rgba(11, 11, 14, 0.48);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
   position: relative;
+  backdrop-filter: blur(8px);
 }
 
 .entry-card:hover,
 .entry-card:focus-visible {
   transform: translateY(-3px);
-  background: rgba(35, 35, 38, 0.98);
+  background: rgba(16, 16, 20, 0.7);
 }
 
 .entry-card-recent {
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .entry-card-archive {
-  flex: 0 0 28%;
+  flex: 0 0 24%;
   width: auto;
-  min-height: 160px;
+  min-height: 146px;
   justify-content: center;
   margin-left: 0;
 }
@@ -679,7 +737,7 @@ h2 {
   }
 
   .landing-view {
-    padding: 0.85rem 0 1.1rem;
+    padding: 1rem 0 1.2rem;
   }
 
   .landing-inner {
@@ -696,15 +754,29 @@ h2 {
   }
 
   .landing-logo {
-    max-width: 140px;
+    max-width: 180px;
   }
 
   .landing-headline {
-    font-size: clamp(1rem, 7vw, 1.45rem);
+    font-size: clamp(2rem, 12vw, 3rem);
+    line-height: 0.94;
+  }
+
+  .landing-summary {
+    font-size: 0.95rem;
+  }
+
+  .platform-cta-band {
+    grid-template-columns: 1fr;
+  }
+
+  .platform-cta {
+    min-height: 112px;
+    width: 100%;
   }
 
   .entry-grid {
-    gap: 1.4rem;
+    gap: 0.9rem;
   }
 
   .entry-card,
