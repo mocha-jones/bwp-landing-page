@@ -607,6 +607,19 @@ h2 {
   margin: 0 auto;
 }
 
+.episode-detail-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+.episode-detail-copy,
+.episode-detail-media {
+  display: grid;
+  gap: 1rem;
+}
+
 .episode-detail-date {
   margin: 0;
   text-align: left;
@@ -614,12 +627,12 @@ h2 {
 }
 
 .episode-detail-title {
-  max-width: 26ch;
+  max-width: 13ch;
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.7rem, 3.6vw, 3.6rem);
+  font-size: clamp(2rem, 4.5vw, 4.6rem);
   font-weight: 800;
-  line-height: 0.93;
+  line-height: 0.9;
   text-align: left;
   text-transform: uppercase;
   letter-spacing: -0.03em;
@@ -677,7 +690,7 @@ h2 {
 .episode-player {
   display: grid;
   gap: 0.95rem;
-  width: min(100%, 1000px);
+  width: 100%;
   padding: 1rem 1rem 1.05rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 28px;
@@ -778,7 +791,7 @@ h2 {
 .episode-video {
   display: grid;
   gap: 0.85rem;
-  width: min(100%, 1000px);
+  width: 100%;
 }
 
 .episode-video-header {
@@ -832,7 +845,7 @@ h2 {
 .episode-detail-body {
   display: grid;
   gap: 2rem;
-  width: min(100%, 1000px);
+  width: 100%;
   margin: 0 auto;
   font-size: 1.05rem;
 }
@@ -873,19 +886,18 @@ h2 {
 }
 
 @media (max-width: 960px) {
-  .episode-detail-card {
-    width: 100%;
+  .episode-detail-hero {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 
   .episode-detail-title {
-    max-width: 22ch;
+    max-width: 18ch;
     font-size: clamp(1.7rem, 6vw, 3rem);
   }
 
-  .episode-player,
-  .episode-video,
-  .episode-detail-body {
-    width: 100%;
+  .episode-detail-media {
+    gap: 1rem;
   }
 
   .episode-player-bar {
@@ -1050,6 +1062,7 @@ h2 {
     gap: 0.9rem;
   }
 
+  .episode-detail-hero,
   .episode-detail-meta,
   .episode-detail-actions,
   .episode-video-header {
