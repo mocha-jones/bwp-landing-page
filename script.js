@@ -255,7 +255,7 @@ function getEpisodeDisplayLabel(episode) {
     return episode.title;
   }
 
-  return `Episode ${rawId}: ${episode.title}`;
+  return `#${rawId} ${episode.title}`;
 }
 
 function renderLanding() {
@@ -427,7 +427,34 @@ function formatPlayerTime(seconds) {
   return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
 }
 
+function getYouTubeEmbedUrl(episode) {
+  const url = getEpisodeYouTubeUrl(episode);
+
+  if (!url) {
+    return "";
+  }
+
+  const watchMatch = url.match(/[?&]v=([^&]+)/i);
+  if (watchMatch) {
+    return `https://www.youtube.com/embed/${watchMatch[1]}`;
+  }
+
+  const shortMatch = url.match(/youtube\.com\/shorts\/([^?&/]+)/i);
+  if (shortMatch) {
+    return `https://www.youtube.com/embed/${shortMatch[1]}`;
+  }
+
+  const shareMatch = url.match(/youtu\.be\/([^?&/]+)/i);
+  if (shareMatch) {
+    return `https://www.youtube.com/embed/${shareMatch[1]}`;
+  }
+
+  return "";
+}
+
 function renderEpisodeDetail(episode) {
+  const embedUrl = getYouTubeEmbedUrl(episode);
+
   detailCard.innerHTML = `
     <p class="episode-detail-date">${episode.date}</p>
     <h1 class="episode-detail-title">${getEpisodeDisplayLabel(episode)}</h1>
@@ -442,7 +469,7 @@ function renderEpisodeDetail(episode) {
             <div class="episode-player-bar">
               <button class="episode-player-toggle" type="button" aria-label="Play episode">Play</button>
               <div class="episode-player-copy">
-                <span class="episode-player-kicker">Episode Audio</span>
+                <span class="episode-player-kicker">Audio</span>
                 <span class="episode-player-name">${getEpisodeDisplayLabel(episode)}</span>
               </div>
               <div class="episode-player-time">
@@ -462,6 +489,28 @@ function renderEpisodeDetail(episode) {
             />
             <audio class="episode-audio" preload="metadata" src="${episode.audioUrl}"></audio>
           </div>
+        `
+        : ""
+    }
+    ${
+      embedUrl
+        ? `
+          <section class="episode-video">
+            <div class="episode-video-header">
+              <span class="episode-video-kicker">Video</span>
+              <a class="episode-video-link" href="${getEpisodeYouTubeUrl(episode)}" target="_blank" rel="noreferrer">Open on YouTube</a>
+            </div>
+            <div class="episode-video-frame">
+              <iframe
+                src="${embedUrl}"
+                title="${getEpisodeDisplayLabel(episode)} on YouTube"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                referrerpolicy="strict-origin-when-cross-origin"
+              ></iframe>
+            </div>
+          </section>
         `
         : ""
     }
