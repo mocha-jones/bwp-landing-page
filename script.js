@@ -434,7 +434,22 @@ function renderEpisodeDetail(episode) {
   `;
 }
 
+function stopEpisodeAudio() {
+  const audio = detailCard.querySelector(".episode-audio");
+
+  if (!audio) {
+    return;
+  }
+
+  audio.pause();
+  audio.currentTime = 0;
+}
+
 function showView(view) {
+  if (view !== "detail") {
+    stopEpisodeAudio();
+  }
+
   landingView.classList.toggle("is-hidden", view !== "landing");
   archiveView.classList.toggle("is-hidden", view !== "archive");
   detailView.classList.toggle("is-hidden", view !== "detail");
