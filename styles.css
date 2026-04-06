@@ -236,8 +236,8 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 132px;
-  padding: 1.35rem 1.25rem;
+  min-height: 108px;
+  padding: 1rem;
   border-radius: 22px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
@@ -258,21 +258,21 @@ h2 {
 
 .platform-cta-badge {
   display: block;
-  width: 100%;
+  width: auto;
   height: auto;
-  max-width: 260px;
+  max-width: 160px;
 }
 
 .platform-cta-badge-youtube {
-  max-width: 236px;
+  max-width: 152px;
 }
 
 .platform-cta-badge-spotify {
-  max-width: 196px;
+  max-width: 148px;
 }
 
 .platform-cta-badge-apple {
-  max-width: 240px;
+  max-width: 158px;
 }
 
 .entry-grid {
