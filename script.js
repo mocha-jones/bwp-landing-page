@@ -299,7 +299,7 @@ function hasEpisodeDestination(episode, index) {
     return true;
   }
 
-  return Boolean(episode.spotifyUrl || episode.appleUrl || getEpisodeYouTubeUrl(episode));
+  return Boolean(episode.audioUrl || episode.spotifyUrl || episode.appleUrl || getEpisodeYouTubeUrl(episode));
 }
 
 function getVisibleEpisodes() {
@@ -319,11 +319,7 @@ function buildArchiveIconLink(href, label, icon) {
 }
 
 function getEpisodeYouTubeUrl(episode) {
-  if (episode.youtubeUrl) {
-    return episode.youtubeUrl;
-  }
-
-  return /youtube\.com|youtu\.be/i.test(episode.externalLink || "") ? episode.externalLink : "";
+  return episode.youtubeUrl || "";
 }
 
 function buildArchivePlatformMarkup(episode) {
