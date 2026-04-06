@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bloody Water Podcast</title>
+    <meta
+      name="description"
+      content="Bloody Water Podcast is your fight-night home for breakdowns, sharp angles, sleeper picks, and the full episode archive."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="#top" aria-label="Bloody Water Podcast home">
+          <img
+            class="brand-logo"
+            src="./assets/logo-dark.png"
+            alt="Bloody Water Podcast logo"
+          />
+          <span class="brand-text">
+            <strong>Bloody Water Podcast</strong>
+            <span>Your favorite fighter's favorite fight show.</span>
+          </span>
+        </a>
+
+        <nav class="site-nav" aria-label="Primary">
+          <a href="#episodes">Episodes</a>
+          <a href="#about">About</a>
+          <a href="#listen">Listen</a>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section class="hero" id="home-hero">
+          <div class="hero-copy">
+            <p class="eyebrow">Bloody Water Podcast</p>
+            <h1>
+              Fight-week breakdowns, sharp reads, and the full Bloody Water archive.
+            </h1>
+            <p class="hero-text">
+              Derick G and AJ Guillen bring betting angles, matchup context,
+              sleeper spots, and straight-up fight talk for the cards that
+              matter. This home page keeps the experience simple so the show,
+              the picks, and the archive stay front and center.
+            </p>
+            <div class="hero-actions">
+              <a class="hero-button hero-button-primary" href="#episodes">
+                Browse episodes
+              </a>
+              <a class="hero-button" href="#about">About the show</a>
+            </div>
+          </div>
+
+          <aside class="hero-card" aria-label="Bloody Water Podcast artwork">
+            <div class="hero-art-frame">
+              <img
+                class="hero-art"
+                src="./assets/logo-dark.png"
+                alt="Bloody Water Podcast artwork"
+              />
+            </div>
+            <div class="hero-card-copy">
+              <p class="card-label">Fight Week Starts Here</p>
+              <h2>The full Bloody Water identity, now leading the site.</h2>
+              <p>
+                Cleaner navigation, a stronger archive, and your actual brand
+                art give the show a home that feels more like Bloody Water and
+                less like a template.
+              </p>
+            </div>
+          </aside>
+        </section>
+
+        <section class="episodes-section" id="episodes">
+          <div class="archive-switcher" role="tablist" aria-label="Episode groups">
+            <button
+              class="archive-card is-active"
+              id="recent-archive-card"
+              type="button"
+              data-filter="recent"
+            ></button>
+            <button class="archive-card" type="button" data-filter="all">
+              <span class="archive-card-label">All Episodes</span>
+              <span class="archive-card-copy">
+                Search every Bloody Water breakdown, preview, and full-card
+                recap in one place.
+              </span>
+            </button>
+          </div>
+
+          <div class="section-top">
+            <div>
+              <p class="eyebrow">Archive</p>
+              <h2>Episode library</h2>
+            </div>
+
+            <label class="search-wrap" for="episode-search">
+              <span class="visually-hidden">Search episodes</span>
+              <input
+                id="episode-search"
+                type="search"
+                placeholder="Search episode title, topic, or keyword"
+              />
+            </label>
+          </div>
+
+          <div class="episodes-grid">
+            <section class="episode-panel" data-panel="recent">
+              <article class="recent-feature" id="recent-feature"></article>
+            </section>
+
+            <section class="episode-panel is-hidden" data-panel="all">
+              <p class="archive-status" id="archive-status">Loading episodes from RedCircle...</p>
+              <div class="episode-list" id="episode-list"></div>
+              <p class="empty-state is-hidden" id="empty-state">
+                No episodes match that search yet.
+              </p>
+            </section>
+          </div>
+        </section>
+
+        <section class="episode-detail-view is-hidden" id="episode-detail-view">
+          <div class="detail-topbar">
+            <button class="detail-back" id="detail-back" type="button">
+              Back to archive
+            </button>
+          </div>
+          <article class="episode-detail-card" id="episode-detail-card"></article>
+        </section>
+
+        <section class="about-section" id="about">
+          <div>
+            <p class="eyebrow">About</p>
+            <h2>The fight talk hub for independent thinkers</h2>
+          </div>
+          <p>
+            Bloody Water Podcast helps listeners get ready for fight night with
+            main-card breakdowns, betting insight, recap energy, and the
+            sleeper matchups worth your attention before the rest of the world
+            catches up.
+          </p>
+        </section>
+
+        <section class="newsletter-section" id="listen">
+          <p class="eyebrow">Listen</p>
+          <h2>Tap into the show wherever you follow the card.</h2>
+          <form class="newsletter-form">
+            <input type="text" placeholder="Spotify, Apple Podcasts, RedCircle" />
+            <button type="button">Platform links live</button>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
