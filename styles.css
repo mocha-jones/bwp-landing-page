@@ -404,7 +404,9 @@ h2 {
 .archive-hero {
   margin: 1.4rem calc(50% - 50vw) 0;
   padding: 2.2rem 0 4rem;
-  background: linear-gradient(90deg, #776f72 0%, #b77b7f 100%);
+  background:
+    radial-gradient(circle at 18% 18%, rgba(216, 154, 114, 0.28), transparent 32%),
+    linear-gradient(100deg, #3b2528 0%, #6f3435 52%, #9a5f45 100%);
   position: relative;
 }
 
@@ -436,9 +438,9 @@ h2 {
   display: flex;
   align-items: center;
   width: min(100%, 290px);
-  border: 2px solid rgba(111, 66, 24, 0.75);
+  border: 2px solid rgba(242, 216, 198, 0.5);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(47, 25, 27, 0.28);
   padding: 0 1rem;
 }
 
@@ -446,7 +448,7 @@ h2 {
   content: "⌕";
   font-size: 0.92rem;
   line-height: 1;
-  color: rgba(111, 66, 24, 0.9);
+  color: rgba(242, 216, 198, 0.82);
   margin-right: 0.8rem;
 }
 
@@ -455,13 +457,13 @@ h2 {
   border: 0;
   outline: 0;
   background: transparent;
-  color: rgba(71, 41, 13, 0.92);
+  color: rgba(255, 246, 239, 0.94);
   min-height: 2.6rem;
   font-size: 0.9rem;
 }
 
 .archive-search input::placeholder {
-  color: rgba(71, 41, 13, 0.72);
+  color: rgba(242, 216, 198, 0.72);
 }
 
 .archive-grid-shell {
