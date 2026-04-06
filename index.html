@@ -19,49 +19,67 @@
   <body>
     <div class="page-shell">
       <header class="site-header">
-        <a class="brand" href="#top" aria-label="Bloody Water Podcast home">Bloody Water Podcast</a>
+        <a class="brand" href="./index.html" aria-label="Bloody Water Podcast home">Bloody Water Podcast</a>
         <nav class="site-nav" aria-label="Primary">
-          <a href="#episodes">Episodes</a>
-          <a href="#about">About</a>
+          <a href="#archive">Episodes</a>
+          <a href="./about.html">About</a>
         </nav>
       </header>
 
       <main id="top">
-        <section class="hero" id="home-hero">
-          <p class="eyebrow">Featured Episode</p>
-          <article class="featured-episode" id="recent-feature"></article>
+        <section class="landing-view" id="landing-view">
+          <div class="landing-inner">
+            <section class="landing-stage">
+              <div class="landing-brand-block">
+                <img class="landing-logo" src="./assets/logo-dark.png" alt="Bloody Water Podcast logo" />
+              </div>
+              <div class="landing-copy">
+                <p class="eyebrow">Bloody Water Podcast</p>
+                <h1 class="landing-headline">Start with the latest breakdown. Open the archive when you want the rest.</h1>
+                <p class="landing-summary">
+                  No link-in-bio clutter. Just the newest episode up front and a clean path into the episodes that
+                  still have real destinations.
+                </p>
+              </div>
+            </section>
+
+            <div class="entry-grid">
+              <a class="entry-card entry-card-recent" id="recent-entry-card" href="#recent">
+                <span class="entry-label">Recent Episode</span>
+                <div class="entry-copy" id="recent-entry-copy"></div>
+              </a>
+
+              <a class="entry-card entry-card-archive" href="#archive">
+                <span class="entry-label">All Episodes</span>
+              </a>
+            </div>
+          </div>
         </section>
 
-        <section class="episodes-section" id="episodes">
-          <div class="section-top">
-            <div>
-              <p class="eyebrow">Episodes</p>
-              <h2>Latest releases</h2>
+        <section class="archive-view is-hidden" id="archive-view">
+          <div class="archive-hero">
+            <div class="archive-hero-row">
+              <h1 class="archive-title">Available Episodes</h1>
+              <label class="archive-search" for="archive-search-input">
+                <span class="visually-hidden">Search episodes</span>
+                <input
+                  id="archive-search-input"
+                  type="search"
+                  placeholder="Search"
+                  autocomplete="off"
+                />
+              </label>
             </div>
           </div>
 
-          <p class="archive-status" id="archive-status">Loading episodes from RedCircle...</p>
-          <div class="episode-list" id="episode-list"></div>
+          <div class="archive-grid-shell">
+            <p class="archive-status" id="archive-status">Loading episodes from RedCircle...</p>
+            <div class="archive-list" id="archive-grid"></div>
+          </div>
         </section>
 
         <section class="episode-detail-view is-hidden" id="episode-detail-view">
-          <div class="detail-topbar">
-            <button class="detail-back" id="detail-back" type="button">
-              Back to archive
-            </button>
-          </div>
           <article class="episode-detail-card" id="episode-detail-card"></article>
-        </section>
-
-        <section class="about-section" id="about">
-          <p class="eyebrow">About</p>
-          <h2>Fight-week breakdowns without the extra noise.</h2>
-          <p>
-            Bloody Water Podcast covers the cards with matchup context, betting
-            angles, and straight-up fight talk. The homepage stays simple on
-            purpose: newest episode first, latest releases underneath, and the
-            rest only when you want it.
-          </p>
         </section>
       </main>
     </div>

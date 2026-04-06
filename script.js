@@ -106,32 +106,17 @@ const fallbackEpisodes = [
   }
 ];
 
-const showLinks = [
-  {
-    label: "Spotify",
-    href: "https://open.spotify.com/show/0GATqczYoMsnlcdYS1bvGX"
-  },
-  {
-    label: "Apple Podcasts",
-    href: "https://podcasts.apple.com/us/podcast/bloody-water-podcast/id1554157578"
-  },
-  {
-    label: "YouTube",
-    href: "https://www.youtube.com/@BloodyWaterPodcast?sub_confirmation=1"
-  }
-];
-
 let episodes = fallbackEpisodes;
+let archiveQuery = "";
 
-const recentFeature = document.getElementById("recent-feature");
-const episodeList = document.getElementById("episode-list");
+const recentEntryCopy = document.getElementById("recent-entry-copy");
 const archiveStatus = document.getElementById("archive-status");
-const heroSection = document.getElementById("home-hero");
-const episodesSection = document.querySelector(".episodes-section");
+const archiveGrid = document.getElementById("archive-grid");
+const archiveSearchInput = document.getElementById("archive-search-input");
+const landingView = document.getElementById("landing-view");
+const archiveView = document.getElementById("archive-view");
 const detailView = document.getElementById("episode-detail-view");
 const detailCard = document.getElementById("episode-detail-card");
-const detailBack = document.getElementById("detail-back");
-const aboutSection = document.getElementById("about");
 
 function decodeHtmlEntities(value) {
   const parser = new DOMParser();
@@ -235,103 +220,197 @@ function formatParagraphs(value) {
   return paragraphs.map((paragraph) => `<p>${paragraph}</p>`).join("");
 }
 
-function createShowLinksMarkup() {
-  return showLinks
-    .map(
-      (link) => `
-        <a class="platform-link" href="${link.href}" target="_blank" rel="noreferrer">
-          ${link.label}
-        </a>
-      `
-    )
+function formatDisplayDate(value) {
+  const parsed = new Date(value);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return value;
+  }
+
+  return parsed.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  });
+}
+
+function formatArchiveDate(value) {
+  const parsed = new Date(value);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return value;
+  }
+
+  return parsed.toLocaleDateString("en-US", {
+    month: "numeric",
+    day: "numeric",
+    year: "2-digit"
+  });
+}
+
+function getEpisodeDisplayLabel(episode) {
+  const rawId = String(episode.id || "").trim();
+
+  if (!rawId || rawId.toLowerCase() === "episode") {
+    return episode.title;
+  }
+
+  return `Episode ${rawId}: ${episode.title}`;
+}
+
+function renderLanding() {
+  const episode = episodes[0];
+  const playUrl = episode.audioUrl ? `#/episodes/${episode.slug}` : "#recent";
+
+  recentEntryCopy.innerHTML = `
+    <p class="entry-title">${getEpisodeDisplayLabel(episode)}</p>
+    <div class="entry-meta">
+      <span>${formatDisplayDate(episode.date)}</span>
+      <span>${episode.length}</span>
+    </div>
+    <div class="entry-actions">
+      <a class="entry-button entry-button-primary" href="${playUrl}">Open Latest Episode</a>
+    </div>
+  `;
+}
+
+function hasEpisodeDestination(episode, index) {
+  if (index === 0) {
+    return true;
+  }
+
+  return Boolean(episode.spotifyUrl || episode.appleUrl);
+}
+
+function getVisibleEpisodes() {
+  return episodes.filter((episode, index) => hasEpisodeDestination(episode, index));
+}
+
+function buildArchiveIconLink(href, label, icon) {
+  if (!href) {
+    return "";
+  }
+
+  return `
+    <a class="archive-icon-link" href="${href}" target="_blank" rel="noreferrer" aria-label="${label}">
+      ${icon}
+    </a>
+  `;
+}
+
+function getEpisodeYouTubeUrl(episode) {
+  return /youtube\.com|youtu\.be/i.test(episode.externalLink || "") ? episode.externalLink : "";
+}
+
+function buildArchivePlatformMarkup(episode) {
+  const spotifyIcon = `
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 1.5a10.5 10.5 0 1 0 0 21 10.5 10.5 0 0 0 0-21Zm4.82 15.13a.75.75 0 0 1-1.03.25c-2.84-1.74-6.42-2.13-10.65-1.18a.75.75 0 1 1-.33-1.47c4.62-1.04 8.58-.58 11.77 1.37.35.21.46.67.24 1.03Zm1.47-3.26a.94.94 0 0 1-1.29.31c-3.25-2-8.21-2.58-12.05-1.42a.94.94 0 1 1-.54-1.8c4.36-1.31 9.78-.67 13.57 1.66.44.27.58.85.31 1.29Zm.13-3.39C14.52 7.66 8.03 7.44 4.36 8.56a1.13 1.13 0 1 1-.66-2.16c4.21-1.29 11.22-1.04 15.9 1.74a1.13 1.13 0 0 1-1.18 1.94Z"/>
+    </svg>
+  `;
+  const appleIcon = `
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M11.98 3.25a1.55 1.55 0 1 1 0 3.1 1.55 1.55 0 0 1 0-3.1Zm0 4.58a4.17 4.17 0 0 0-4.17 4.17v.75a.9.9 0 1 0 1.8 0V12a2.37 2.37 0 1 1 4.74 0v.75a.9.9 0 1 0 1.8 0V12a4.17 4.17 0 0 0-4.17-4.17Zm0 6.1a2.07 2.07 0 1 0 0 4.14 2.07 2.07 0 0 0 0-4.14Zm0 1.5a.57.57 0 1 1 0 1.14.57.57 0 0 1 0-1.14Z"/>
+      <path d="M11.98 0C5.37 0 0 5.37 0 11.98s5.37 11.98 11.98 11.98 11.98-5.37 11.98-11.98S18.6 0 11.98 0Zm0 21.96c-5.5 0-9.98-4.48-9.98-9.98S6.48 2 11.98 2s9.98 4.48 9.98 9.98-4.48 9.98-9.98 9.98Z"/>
+    </svg>
+  `;
+
+  return [
+    buildArchiveIconLink(episode.appleUrl, "Apple Podcasts", appleIcon),
+    buildArchiveIconLink(episode.spotifyUrl, "Spotify", spotifyIcon)
+  ]
+    .filter(Boolean)
     .join("");
 }
 
-function buildFeatureActions(episode) {
-  const primaryUrl = episode.spotifyUrl || episode.appleUrl || episode.externalLink || `#/episodes/${episode.slug}`;
-  const primaryLabel = episode.spotifyUrl
-    ? "Listen on Spotify"
-    : episode.appleUrl
-      ? "Listen on Apple Podcasts"
-      : episode.externalLink
-        ? "Watch on YouTube"
-        : "Open episode";
+function createArchiveCardMarkup(episode) {
+  const summary = truncateText(episode.summary || episode.fullSummary || "", 150);
 
   return `
-    <div class="featured-actions">
-      <a
-        class="action-link action-link-primary"
-        href="${primaryUrl}"
-        ${primaryUrl.startsWith("#") ? "" : 'target="_blank" rel="noreferrer"'}
-      >
-        ${primaryLabel}
+    <article class="archive-card">
+      <a class="archive-card-media" href="#/episodes/${episode.slug}">
+        <img
+          class="archive-card-image"
+          src="${episode.imageUrl || "./assets/logo-dark.png"}"
+          alt="Artwork for Episode ${episode.id}"
+          loading="lazy"
+        />
+        <span class="archive-card-play" aria-hidden="true"></span>
       </a>
-      <a class="action-link" href="#/episodes/${episode.slug}">
-        Episode page
-      </a>
-    </div>
-  `;
-}
-
-function renderRecentEpisode() {
-  const episode = episodes[0];
-
-  recentFeature.innerHTML = `
-    <div class="featured-media">
-      <img
-        class="featured-art"
-        src="${episode.imageUrl || "./assets/logo-dark.png"}"
-        alt="Artwork for Episode ${episode.id}"
-      />
-    </div>
-    <div class="featured-content">
-      <p class="episode-row-meta">
-        <span>${episode.date}</span>
-        <span>${episode.length}</span>
-      </p>
-      <h1 class="featured-title">Episode ${episode.id}: ${episode.title}</h1>
-      <p class="featured-summary">${episode.summary}</p>
-      ${buildFeatureActions(episode)}
-      <div class="platform-links">
-        ${createShowLinksMarkup()}
+      <div class="archive-card-content">
+        <p class="archive-card-date">${formatArchiveDate(episode.date)}</p>
+        <a href="#/episodes/${episode.slug}">
+          <h2 class="archive-card-title">${getEpisodeDisplayLabel(episode)}</h2>
+        </a>
+        <p class="archive-card-summary">${summary}</p>
+        <div class="archive-card-actions">
+          <a class="archive-card-link" href="#/episodes/${episode.slug}">Open Episode</a>
+          <div class="archive-card-platforms">
+            ${buildArchivePlatformMarkup(episode)}
+          </div>
+        </div>
       </div>
-    </div>
-  `;
-}
-
-function createEpisodeMarkup(episode) {
-  return `
-    <article class="episode-row">
-      <a class="episode-row-link" href="#/episodes/${episode.slug}" data-episode-link="${episode.slug}">
-        <div class="episode-row-main">
-          <span class="episode-row-title">Episode ${episode.id}: ${episode.title}</span>
-          <span class="episode-row-arrow">View</span>
-        </div>
-        <div class="episode-row-meta">
-          <span>${episode.date}</span>
-          <span>${episode.length}</span>
-        </div>
-      </a>
     </article>
   `;
 }
 
-function renderEpisodeList() {
-  episodeList.innerHTML = episodes.map(createEpisodeMarkup).join("");
-  archiveStatus.textContent = `Showing ${episodes.length} recent episode${episodes.length === 1 ? "" : "s"}.`;
+function renderArchiveGrid() {
+  const visibleEpisodes = getVisibleEpisodes();
+  const query = archiveQuery.trim().toLowerCase();
+  const filteredEpisodes = query
+    ? visibleEpisodes.filter((episode) =>
+        [episode.title, episode.summary, episode.fullSummary, String(episode.id)]
+          .filter(Boolean)
+          .some((value) => value.toLowerCase().includes(query))
+      )
+    : visibleEpisodes;
+
+  archiveGrid.innerHTML = filteredEpisodes.map(createArchiveCardMarkup).join("");
+
+  if (!filteredEpisodes.length) {
+    archiveStatus.textContent = `No episodes found for "${archiveQuery}".`;
+    archiveGrid.innerHTML = "";
+    return;
+  }
+
+  archiveStatus.textContent = `Showing ${filteredEpisodes.length} linked episode${filteredEpisodes.length === 1 ? "" : "s"}.`;
+}
+
+function buildIconLink(href, label, icon) {
+  if (!href) {
+    return "";
+  }
+
+  return `
+    <a class="platform-button" href="${href}" target="_blank" rel="noreferrer" aria-label="${label}">
+      ${icon}
+      <span class="platform-button-label">${label}</span>
+    </a>
+  `;
 }
 
 function buildPlatformMarkup(episode) {
+  const spotifyIcon = `
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 1.5a10.5 10.5 0 1 0 0 21 10.5 10.5 0 0 0 0-21Zm4.82 15.13a.75.75 0 0 1-1.03.25c-2.84-1.74-6.42-2.13-10.65-1.18a.75.75 0 1 1-.33-1.47c4.62-1.04 8.58-.58 11.77 1.37.35.21.46.67.24 1.03Zm1.47-3.26a.94.94 0 0 1-1.29.31c-3.25-2-8.21-2.58-12.05-1.42a.94.94 0 1 1-.54-1.8c4.36-1.31 9.78-.67 13.57 1.66.44.27.58.85.31 1.29Zm.13-3.39C14.52 7.66 8.03 7.44 4.36 8.56a1.13 1.13 0 1 1-.66-2.16c4.21-1.29 11.22-1.04 15.9 1.74a1.13 1.13 0 0 1-1.18 1.94Z"/>
+    </svg>
+  `;
+  const appleIcon = `
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M11.98 3.25a1.55 1.55 0 1 1 0 3.1 1.55 1.55 0 0 1 0-3.1Zm0 4.58a4.17 4.17 0 0 0-4.17 4.17v.75a.9.9 0 1 0 1.8 0V12a2.37 2.37 0 1 1 4.74 0v.75a.9.9 0 1 0 1.8 0V12a4.17 4.17 0 0 0-4.17-4.17Zm0 6.1a2.07 2.07 0 1 0 0 4.14 2.07 2.07 0 0 0 0-4.14Zm0 1.5a.57.57 0 1 1 0 1.14.57.57 0 0 1 0-1.14Z"/>
+      <path d="M11.98 0C5.37 0 0 5.37 0 11.98s5.37 11.98 11.98 11.98 11.98-5.37 11.98-11.98S18.6 0 11.98 0Zm0 21.96c-5.5 0-9.98-4.48-9.98-9.98S6.48 2 11.98 2s9.98 4.48 9.98 9.98-4.48 9.98-9.98 9.98Z"/>
+    </svg>
+  `;
+  const youtubeIcon = `
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M21.3 7.2a2.85 2.85 0 0 0-2-2c-1.77-.47-8.88-.47-8.88-.47s-7.1 0-8.88.47a2.85 2.85 0 0 0-2 2A29.7 29.7 0 0 0-.02 12a29.7 29.7 0 0 0 .46 4.8 2.85 2.85 0 0 0 2 2c1.78.47 8.88.47 8.88.47s7.11 0 8.88-.47a2.85 2.85 0 0 0 2-2 29.69 29.69 0 0 0 .47-4.8 29.69 29.69 0 0 0-.47-4.8ZM9.57 15.07V8.93L14.98 12l-5.41 3.07Z"/>
+    </svg>
+  `;
+
   const links = [
-    episode.spotifyUrl
-      ? `<a class="platform-link" href="${episode.spotifyUrl}" target="_blank" rel="noreferrer">Spotify</a>`
-      : "",
-    episode.appleUrl
-      ? `<a class="platform-link" href="${episode.appleUrl}" target="_blank" rel="noreferrer">Apple Podcasts</a>`
-      : "",
-    episode.externalLink
-      ? `<a class="platform-link" href="${episode.externalLink}" target="_blank" rel="noreferrer">YouTube</a>`
-      : ""
+    buildIconLink(episode.spotifyUrl, "Spotify", spotifyIcon),
+    buildIconLink(episode.appleUrl, "Apple Podcasts", appleIcon),
+    buildIconLink(getEpisodeYouTubeUrl(episode), "YouTube", youtubeIcon)
   ]
     .filter(Boolean)
     .join("");
@@ -342,24 +421,19 @@ function buildPlatformMarkup(episode) {
 function renderEpisodeDetail(episode) {
   detailCard.innerHTML = `
     <p class="episode-detail-date">${episode.date}</p>
-    <h1 class="episode-detail-title">Episode ${episode.id}: ${episode.title}</h1>
+    <h1 class="episode-detail-title">${getEpisodeDisplayLabel(episode)}</h1>
     <div class="episode-detail-meta">
       <span>${episode.length}</span>
       <span>${episode.category}</span>
     </div>
     ${
-      episode.imageUrl
-        ? `<img class="episode-detail-art" src="${episode.imageUrl}" alt="Artwork for Episode ${episode.id}" />`
+      episode.audioUrl
+        ? `<audio class="episode-audio" controls preload="metadata" src="${episode.audioUrl}"></audio>`
         : ""
     }
     ${
       buildPlatformMarkup(episode)
         ? `<div class="episode-detail-actions">${buildPlatformMarkup(episode)}</div>`
-        : ""
-    }
-    ${
-      episode.audioUrl
-        ? `<audio class="episode-audio" controls preload="metadata" src="${episode.audioUrl}"></audio>`
         : ""
     }
     <div class="episode-detail-body">
@@ -368,37 +442,52 @@ function renderEpisodeDetail(episode) {
   `;
 }
 
+function showView(view) {
+  landingView.classList.toggle("is-hidden", view !== "landing");
+  archiveView.classList.toggle("is-hidden", view !== "archive");
+  detailView.classList.toggle("is-hidden", view !== "detail");
+  document.body.dataset.view = view;
+}
+
 function renderRoute() {
   const match = window.location.hash.match(/^#\/episodes\/(.+)$/);
 
-  if (!match) {
-    detailView.classList.add("is-hidden");
-    heroSection.classList.remove("is-hidden");
-    episodesSection.classList.remove("is-hidden");
-    aboutSection.classList.remove("is-hidden");
+  if (window.location.hash === "#archive") {
+    showView("archive");
+    renderArchiveGrid();
+    window.scrollTo({ top: 0, behavior: "smooth" });
     return;
   }
 
-  const [, slug] = match;
-  const episode = episodes.find((item) => item.slug === slug);
-
-  if (!episode) {
-    window.location.hash = "";
+  if (window.location.hash === "#recent") {
+    renderEpisodeDetail(episodes[0]);
+    showView("detail");
+    window.scrollTo({ top: 0, behavior: "smooth" });
     return;
   }
 
-  renderEpisodeDetail(episode);
-  detailView.classList.remove("is-hidden");
-  heroSection.classList.add("is-hidden");
-  episodesSection.classList.add("is-hidden");
-  aboutSection.classList.add("is-hidden");
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (match) {
+    const [, slug] = match;
+    const episode = getVisibleEpisodes().find((item) => item.slug === slug) || (episodes[0]?.slug === slug ? episodes[0] : null);
+
+    if (!episode) {
+      window.location.hash = "#archive";
+      return;
+    }
+
+    renderEpisodeDetail(episode);
+    showView("detail");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+
+  showView("landing");
 }
 
 window.addEventListener("hashchange", renderRoute);
-
-detailBack.addEventListener("click", () => {
-  window.location.hash = "";
+archiveSearchInput.addEventListener("input", (event) => {
+  archiveQuery = event.target.value;
+  renderArchiveGrid();
 });
 
 function parseEpisodeItem(item) {
@@ -493,8 +582,8 @@ async function loadEpisodesFromFeed() {
     }
 
     episodes = parsedEpisodes;
-    renderRecentEpisode();
-    renderEpisodeList();
+    renderLanding();
+    renderArchiveGrid();
     renderRoute();
   } catch (error) {
     archiveStatus.textContent = "Live feed unavailable right now. Showing placeholder episodes.";
@@ -502,7 +591,7 @@ async function loadEpisodesFromFeed() {
   }
 }
 
-renderRecentEpisode();
-renderEpisodeList();
+renderLanding();
+renderArchiveGrid();
 renderRoute();
 loadEpisodesFromFeed();

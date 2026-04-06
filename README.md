@@ -30,6 +30,26 @@ Then visit `http://localhost:4173`.
 2. If Netlify asks for a publish directory, use `.`.
 3. The included Netlify config runs `node scripts/build-platform-links.mjs` before publish.
 
+## Move to another machine
+
+The safest workflow is to use GitHub as the source of truth for this folder.
+
+```bash
+git clone https://github.com/mocha-jones/bwp-landing-page.git
+cd bwp-landing-page
+node scripts/build-platform-links.mjs
+python3 -m http.server 4173
+```
+
+Then open the cloned folder in Codex on the other machine and continue working there.
+
+Notes:
+
+- The project files live in GitHub and transfer cleanly between machines.
+- The `.netlify` folder is local-only and does not need to be copied.
+- Vim swap files like `.index.html.swp` are ignored and should not be committed.
+- If you use Google Drive as a backup, sync the whole project folder locally first, then open that local folder in Codex.
+
 ## Next customization ideas
 
 - Keep refining homepage sections and supporting brand copy
