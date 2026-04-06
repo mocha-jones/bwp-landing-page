@@ -410,6 +410,23 @@ function buildPlatformMarkup(episode) {
   return links;
 }
 
+function formatPlayerTime(seconds) {
+  if (!Number.isFinite(seconds) || seconds < 0) {
+    return "0:00";
+  }
+
+  const totalSeconds = Math.floor(seconds);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const remainingSeconds = totalSeconds % 60;
+
+  if (hours > 0) {
+    return `${hours}:${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
+  }
+
+  return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
+}
+
 function renderEpisodeDetail(episode) {
   detailCard.innerHTML = `
     <p class="episode-detail-date">${episode.date}</p>
@@ -420,7 +437,32 @@ function renderEpisodeDetail(episode) {
     </div>
     ${
       episode.audioUrl
-        ? `<audio class="episode-audio" controls preload="metadata" src="${episode.audioUrl}"></audio>`
+        ? `
+          <div class="episode-player">
+            <div class="episode-player-bar">
+              <button class="episode-player-toggle" type="button" aria-label="Play episode">Play</button>
+              <div class="episode-player-copy">
+                <span class="episode-player-kicker">Episode Audio</span>
+                <span class="episode-player-name">${getEpisodeDisplayLabel(episode)}</span>
+              </div>
+              <div class="episode-player-time">
+                <span class="episode-player-current">0:00</span>
+                <span class="episode-player-separator">/</span>
+                <span class="episode-player-duration">${episode.length}</span>
+              </div>
+            </div>
+            <input
+              class="episode-player-progress"
+              type="range"
+              min="0"
+              max="1000"
+              value="0"
+              step="1"
+              aria-label="Seek episode audio"
+            />
+            <audio class="episode-audio" preload="metadata" src="${episode.audioUrl}"></audio>
+          </div>
+        `
         : ""
     }
     ${
@@ -432,6 +474,71 @@ function renderEpisodeDetail(episode) {
       ${formatParagraphs(episode.fullSummary)}
     </div>
   `;
+
+  setupEpisodeAudioPlayer();
+}
+
+function setupEpisodeAudioPlayer() {
+  const audio = detailCard.querySelector(".episode-audio");
+
+  if (!audio) {
+    return;
+  }
+
+  const toggle = detailCard.querySelector(".episode-player-toggle");
+  const progress = detailCard.querySelector(".episode-player-progress");
+  const currentTimeLabel = detailCard.querySelector(".episode-player-current");
+  const durationLabel = detailCard.querySelector(".episode-player-duration");
+
+  const syncButton = () => {
+    const isPlaying = !audio.paused && !audio.ended;
+    toggle.textContent = isPlaying ? "Pause" : "Play";
+    toggle.setAttribute("aria-label", isPlaying ? "Pause episode" : "Play episode");
+  };
+
+  const syncTimeline = () => {
+    const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
+    const currentTime = Number.isFinite(audio.currentTime) ? audio.currentTime : 0;
+    const progressValue = duration > 0 ? Math.round((currentTime / duration) * 1000) : 0;
+
+    progress.value = String(progressValue);
+    currentTimeLabel.textContent = formatPlayerTime(currentTime);
+    durationLabel.textContent = duration > 0 ? formatPlayerTime(duration) : durationLabel.textContent;
+  };
+
+  toggle.addEventListener("click", async () => {
+    if (audio.paused) {
+      try {
+        await audio.play();
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      audio.pause();
+    }
+  });
+
+  progress.addEventListener("input", () => {
+    if (!Number.isFinite(audio.duration) || audio.duration <= 0) {
+      return;
+    }
+
+    audio.currentTime = (Number(progress.value) / 1000) * audio.duration;
+    syncTimeline();
+  });
+
+  audio.addEventListener("loadedmetadata", syncTimeline);
+  audio.addEventListener("timeupdate", syncTimeline);
+  audio.addEventListener("play", syncButton);
+  audio.addEventListener("pause", syncButton);
+  audio.addEventListener("ended", () => {
+    audio.currentTime = 0;
+    syncTimeline();
+    syncButton();
+  });
+
+  syncTimeline();
+  syncButton();
 }
 
 function stopEpisodeAudio() {
