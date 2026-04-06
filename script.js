@@ -454,8 +454,14 @@ function getYouTubeEmbedUrl(episode) {
 
 function renderEpisodeDetail(episode) {
   const embedUrl = getYouTubeEmbedUrl(episode);
-  const platformMarkup = buildPlatformMarkup(episode);
-  const mediaMarkup = `
+
+  detailCard.innerHTML = `
+    <p class="episode-detail-date">${episode.date}</p>
+    <h1 class="episode-detail-title">${getEpisodeDisplayLabel(episode)}</h1>
+    <div class="episode-detail-meta">
+      <span>${episode.length}</span>
+      <span>${episode.category}</span>
+    </div>
     ${
       episode.audioUrl
         ? `
@@ -508,21 +514,11 @@ function renderEpisodeDetail(episode) {
         `
         : ""
     }
-  `;
-
-  detailCard.innerHTML = `
-    <section class="episode-detail-hero">
-      <div class="episode-detail-copy">
-        <p class="episode-detail-date">${episode.date}</p>
-        <h1 class="episode-detail-title">${getEpisodeDisplayLabel(episode)}</h1>
-        <div class="episode-detail-meta">
-          <span>${episode.length}</span>
-          <span>${episode.category}</span>
-        </div>
-        ${platformMarkup ? `<div class="episode-detail-actions">${platformMarkup}</div>` : ""}
-      </div>
-      ${mediaMarkup.trim() ? `<div class="episode-detail-media">${mediaMarkup}</div>` : ""}
-    </section>
+    ${
+      buildPlatformMarkup(episode)
+        ? `<div class="episode-detail-actions">${buildPlatformMarkup(episode)}</div>`
+        : ""
+    }
     <div class="episode-detail-body">
       ${formatParagraphs(episode.fullSummary)}
     </div>
