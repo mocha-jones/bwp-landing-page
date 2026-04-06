@@ -272,7 +272,7 @@ h2 {
 }
 
 .platform-cta-badge-apple {
-  max-width: 158px;
+  max-width: 146px;
 }
 
 .entry-grid {
@@ -647,26 +647,30 @@ h2 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.7rem;
-  min-height: 2.9rem;
-  padding: 0.7rem 1rem;
+  min-height: 3.15rem;
+  padding: 0.85rem 1.2rem;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(255, 255, 255, 0.04);
   color: rgba(255, 255, 255, 0.92);
 }
 
-.platform-button svg {
-  width: 1.2rem;
-  height: 1.2rem;
-  fill: currentColor;
+.platform-button-logo {
+  display: block;
+  width: auto;
+  height: 1.15rem;
 }
 
-.platform-button-label {
-  font-family: var(--font-ui);
-  font-size: 0.62rem;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
+.platform-button-youtube .platform-button-logo {
+  height: 1rem;
+}
+
+.platform-button-spotify .platform-button-logo {
+  height: 1.22rem;
+}
+
+.platform-button-apple .platform-button-logo {
+  height: 1.06rem;
 }
 
 .episode-audio {

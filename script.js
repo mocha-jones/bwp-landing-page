@@ -376,41 +376,23 @@ function renderArchiveGrid() {
   archiveStatus.textContent = `Showing ${filteredEpisodes.length} linked episode${filteredEpisodes.length === 1 ? "" : "s"}.`;
 }
 
-function buildIconLink(href, label, icon) {
+function buildPlatformLogoLink(href, label, logoClass, logoSrc) {
   if (!href) {
     return "";
   }
 
   return `
-    <a class="platform-button" href="${href}" target="_blank" rel="noreferrer" aria-label="${label}">
-      ${icon}
-      <span class="platform-button-label">${label}</span>
+    <a class="platform-button ${logoClass}" href="${href}" target="_blank" rel="noreferrer" aria-label="${label}">
+      <img class="platform-button-logo" src="${logoSrc}" alt="${label}" />
     </a>
   `;
 }
 
 function buildPlatformMarkup(episode) {
-  const spotifyIcon = `
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 1.5a10.5 10.5 0 1 0 0 21 10.5 10.5 0 0 0 0-21Zm4.82 15.13a.75.75 0 0 1-1.03.25c-2.84-1.74-6.42-2.13-10.65-1.18a.75.75 0 1 1-.33-1.47c4.62-1.04 8.58-.58 11.77 1.37.35.21.46.67.24 1.03Zm1.47-3.26a.94.94 0 0 1-1.29.31c-3.25-2-8.21-2.58-12.05-1.42a.94.94 0 1 1-.54-1.8c4.36-1.31 9.78-.67 13.57 1.66.44.27.58.85.31 1.29Zm.13-3.39C14.52 7.66 8.03 7.44 4.36 8.56a1.13 1.13 0 1 1-.66-2.16c4.21-1.29 11.22-1.04 15.9 1.74a1.13 1.13 0 0 1-1.18 1.94Z"/>
-    </svg>
-  `;
-  const appleIcon = `
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M11.98 3.25a1.55 1.55 0 1 1 0 3.1 1.55 1.55 0 0 1 0-3.1Zm0 4.58a4.17 4.17 0 0 0-4.17 4.17v.75a.9.9 0 1 0 1.8 0V12a2.37 2.37 0 1 1 4.74 0v.75a.9.9 0 1 0 1.8 0V12a4.17 4.17 0 0 0-4.17-4.17Zm0 6.1a2.07 2.07 0 1 0 0 4.14 2.07 2.07 0 0 0 0-4.14Zm0 1.5a.57.57 0 1 1 0 1.14.57.57 0 0 1 0-1.14Z"/>
-      <path d="M11.98 0C5.37 0 0 5.37 0 11.98s5.37 11.98 11.98 11.98 11.98-5.37 11.98-11.98S18.6 0 11.98 0Zm0 21.96c-5.5 0-9.98-4.48-9.98-9.98S6.48 2 11.98 2s9.98 4.48 9.98 9.98-4.48 9.98-9.98 9.98Z"/>
-    </svg>
-  `;
-  const youtubeIcon = `
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M21.3 7.2a2.85 2.85 0 0 0-2-2c-1.77-.47-8.88-.47-8.88-.47s-7.1 0-8.88.47a2.85 2.85 0 0 0-2 2A29.7 29.7 0 0 0-.02 12a29.7 29.7 0 0 0 .46 4.8 2.85 2.85 0 0 0 2 2c1.78.47 8.88.47 8.88.47s7.11 0 8.88-.47a2.85 2.85 0 0 0 2-2 29.69 29.69 0 0 0 .47-4.8 29.69 29.69 0 0 0-.47-4.8ZM9.57 15.07V8.93L14.98 12l-5.41 3.07Z"/>
-    </svg>
-  `;
-
   const links = [
-    buildIconLink(episode.spotifyUrl, "Spotify", spotifyIcon),
-    buildIconLink(episode.appleUrl, "Apple Podcasts", appleIcon),
-    buildIconLink(getEpisodeYouTubeUrl(episode), "YouTube", youtubeIcon)
+    buildPlatformLogoLink(episode.spotifyUrl, "Spotify", "platform-button-spotify", "./assets/spotify-logo-white.svg"),
+    buildPlatformLogoLink(episode.appleUrl, "Apple Podcasts", "platform-button-apple", "./assets/apple-podcasts-logo-white.svg"),
+    buildPlatformLogoLink(getEpisodeYouTubeUrl(episode), "YouTube", "platform-button-youtube", "./assets/youtube-logo-white.png")
   ]
     .filter(Boolean)
     .join("");
