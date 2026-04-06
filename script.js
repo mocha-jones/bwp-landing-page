@@ -1,20 +1,5 @@
 const feedUrl = "https://feeds.redcircle.com/62a0c25c-90d4-44f5-bc2d-00adaec37398";
 const platformLinksUrl = "./data/platform-links.json";
-const showLinks = [
-  {
-    label: "Spotify",
-    href: "https://open.spotify.com/show/0GATqczYoMsnlcdYS1bvGX",
-    primary: true
-  },
-  {
-    label: "Apple Podcasts",
-    href: "https://podcasts.apple.com/us/podcast/bloody-water-podcast/id1554157578"
-  },
-  {
-    label: "YouTube",
-    href: "https://www.youtube.com/@BloodyWaterPodcast?sub_confirmation=1"
-  }
-];
 
 const fallbackEpisodes = [
   {
@@ -121,199 +106,32 @@ const fallbackEpisodes = [
   }
 ];
 
+const showLinks = [
+  {
+    label: "Spotify",
+    href: "https://open.spotify.com/show/0GATqczYoMsnlcdYS1bvGX"
+  },
+  {
+    label: "Apple Podcasts",
+    href: "https://podcasts.apple.com/us/podcast/bloody-water-podcast/id1554157578"
+  },
+  {
+    label: "YouTube",
+    href: "https://www.youtube.com/@BloodyWaterPodcast?sub_confirmation=1"
+  }
+];
+
 let episodes = fallbackEpisodes;
 
 const recentFeature = document.getElementById("recent-feature");
 const episodeList = document.getElementById("episode-list");
-const emptyState = document.getElementById("empty-state");
 const archiveStatus = document.getElementById("archive-status");
-const searchInput = document.getElementById("episode-search");
-const archiveCards = document.querySelectorAll(".archive-card");
-const panels = document.querySelectorAll(".episode-panel");
-const recentArchiveCard = document.getElementById("recent-archive-card");
 const heroSection = document.getElementById("home-hero");
 const episodesSection = document.querySelector(".episodes-section");
 const detailView = document.getElementById("episode-detail-view");
 const detailCard = document.getElementById("episode-detail-card");
 const detailBack = document.getElementById("detail-back");
 const aboutSection = document.getElementById("about");
-const listenSection = document.getElementById("listen");
-const latestListenCard = document.getElementById("latest-listen-card");
-const showLinksContainer = document.getElementById("show-links");
-
-function renderRecentEpisode() {
-  const episode = episodes[0];
-
-  recentFeature.innerHTML = `
-    <div class="recent-feature-copy">
-      <p class="eyebrow">${episode.category}</p>
-      <h3>${episode.title}</h3>
-      <p>${episode.summary}</p>
-      <div class="recent-meta">
-        <span>Episode ${episode.id}</span>
-        <span>${episode.length}</span>
-        <span>${episode.date}</span>
-      </div>
-      <div class="episode-card-actions">
-        <a class="episode-action episode-action-primary" href="#/episodes/${episode.slug}">
-          View episode
-        </a>
-      </div>
-    </div>
-    <div class="recent-feature-art-wrap">
-      <img class="recent-feature-art" src="${episode.imageUrl || "./assets/logo-dark.png"}" alt="Artwork for Episode ${episode.id}" />
-    </div>
-  `;
-}
-
-function renderArchiveCards() {
-  const episode = episodes[0];
-
-  recentArchiveCard.innerHTML = `
-    <span class="archive-card-label">Recent Episode</span>
-    <span class="archive-card-copy">
-      Episode ${episode.id}: ${episode.title}
-    </span>
-    <div class="archive-card-meta">
-      <span>${episode.date}</span>
-      <span>${episode.length}</span>
-    </div>
-  `;
-}
-
-function renderShowLinks() {
-  showLinksContainer.innerHTML = showLinks
-    .map(
-      (link) => `
-        <a
-          class="show-link${link.primary ? " show-link-primary" : ""}"
-          href="${link.href}"
-          target="_blank"
-          rel="noreferrer"
-        >
-          ${link.label}
-        </a>
-      `
-    )
-    .join("");
-}
-
-function renderListenSection() {
-  const episode = episodes[0];
-  const primaryListenUrl = episode.spotifyUrl || episode.appleUrl || episode.externalLink || "#/episodes/${episode.slug}";
-  const primaryListenLabel = episode.spotifyUrl
-    ? "Listen on Spotify"
-    : episode.appleUrl
-      ? "Listen on Apple Podcasts"
-      : episode.externalLink
-        ? "Watch on YouTube"
-        : "Open episode";
-
-  latestListenCard.innerHTML = `
-    <p class="card-label">Latest Episode</p>
-    <h3 class="latest-listen-title">Episode ${episode.id}: ${episode.title}</h3>
-    <p class="latest-listen-summary">${episode.summary}</p>
-    <div class="latest-listen-meta">
-      <span>${episode.date}</span>
-      <span>${episode.length}</span>
-    </div>
-    <div class="listen-actions">
-      <a
-        class="listen-action listen-action-primary"
-        href="${primaryListenUrl}"
-        ${primaryListenUrl.startsWith("#") ? "" : 'target="_blank" rel="noreferrer"'}
-      >
-        ${primaryListenLabel}
-      </a>
-      <a class="listen-action" href="#/episodes/${episode.slug}">
-        Read episode page
-      </a>
-    </div>
-  `;
-}
-
-function createEpisodeMarkup(episode) {
-  return `
-    <article class="episode-card">
-      <a class="episode-card-link" href="#/episodes/${episode.slug}" data-episode-link="${episode.slug}">
-        <span class="episode-tag">${episode.category}</span>
-        <h3 class="episode-card-title">Episode ${episode.id}: ${episode.title}</h3>
-        <p>${episode.summary}</p>
-        <div class="episode-card-footer">
-          <span>${episode.length}</span>
-          <span>${episode.date}</span>
-        </div>
-      </a>
-      <div class="episode-card-actions">
-        <a class="episode-action episode-action-primary" href="#/episodes/${episode.slug}" data-episode-link="${episode.slug}">
-          View episode
-        </a>
-      </div>
-    </article>
-  `;
-}
-
-function renderEpisodeList(query = "") {
-  const normalizedQuery = query.trim().toLowerCase();
-
-  const filteredEpisodes = episodes.filter((episode) => {
-    if (!normalizedQuery) {
-      return true;
-    }
-
-    const haystack = [
-      episode.title,
-      episode.summary,
-      episode.category,
-      ...episode.keywords
-    ]
-      .join(" ")
-      .toLowerCase();
-
-    return haystack.includes(normalizedQuery);
-  });
-
-  episodeList.innerHTML = filteredEpisodes.map(createEpisodeMarkup).join("");
-  emptyState.classList.toggle("is-hidden", filteredEpisodes.length > 0);
-  archiveStatus.textContent = filteredEpisodes.length
-    ? `Showing ${filteredEpisodes.length} episode${filteredEpisodes.length === 1 ? "" : "s"} from the Bloody Water archive.`
-    : "No episodes match that search yet.";
-}
-
-function setActiveTab(filter) {
-  archiveCards.forEach((card) => {
-    card.classList.toggle("is-active", card.dataset.filter === filter);
-  });
-
-  panels.forEach((panel) => {
-    panel.classList.toggle("is-hidden", panel.dataset.panel !== filter);
-  });
-}
-
-archiveCards.forEach((card) => {
-  card.addEventListener("click", () => {
-    setActiveTab(card.dataset.filter);
-  });
-});
-
-searchInput.addEventListener("input", (event) => {
-  const query = event.target.value;
-  renderEpisodeList(query);
-
-  if (query.trim()) {
-    setActiveTab("all");
-  }
-});
-
-renderRecentEpisode();
-renderArchiveCards();
-renderEpisodeList();
-renderShowLinks();
-renderListenSection();
-
-detailBack.addEventListener("click", () => {
-  window.location.hash = "";
-});
 
 function decodeHtmlEntities(value) {
   const parser = new DOMParser();
@@ -394,17 +212,12 @@ function formatDuration(value) {
   const totalSeconds = Number(value);
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
 
   if (hours > 0) {
     return `${hours}h ${minutes}m`;
   }
 
-  if (minutes > 0) {
-    return `${minutes}m ${seconds}s`;
-  }
-
-  return `${seconds}s`;
+  return `${minutes}m`;
 }
 
 function formatParagraphs(value) {
@@ -422,6 +235,92 @@ function formatParagraphs(value) {
   return paragraphs.map((paragraph) => `<p>${paragraph}</p>`).join("");
 }
 
+function createShowLinksMarkup() {
+  return showLinks
+    .map(
+      (link) => `
+        <a class="platform-link" href="${link.href}" target="_blank" rel="noreferrer">
+          ${link.label}
+        </a>
+      `
+    )
+    .join("");
+}
+
+function buildFeatureActions(episode) {
+  const primaryUrl = episode.spotifyUrl || episode.appleUrl || episode.externalLink || `#/episodes/${episode.slug}`;
+  const primaryLabel = episode.spotifyUrl
+    ? "Listen on Spotify"
+    : episode.appleUrl
+      ? "Listen on Apple Podcasts"
+      : episode.externalLink
+        ? "Watch on YouTube"
+        : "Open episode";
+
+  return `
+    <div class="featured-actions">
+      <a
+        class="action-link action-link-primary"
+        href="${primaryUrl}"
+        ${primaryUrl.startsWith("#") ? "" : 'target="_blank" rel="noreferrer"'}
+      >
+        ${primaryLabel}
+      </a>
+      <a class="action-link" href="#/episodes/${episode.slug}">
+        Episode page
+      </a>
+    </div>
+  `;
+}
+
+function renderRecentEpisode() {
+  const episode = episodes[0];
+
+  recentFeature.innerHTML = `
+    <div class="featured-media">
+      <img
+        class="featured-art"
+        src="${episode.imageUrl || "./assets/logo-dark.png"}"
+        alt="Artwork for Episode ${episode.id}"
+      />
+    </div>
+    <div class="featured-content">
+      <p class="episode-row-meta">
+        <span>${episode.date}</span>
+        <span>${episode.length}</span>
+      </p>
+      <h1 class="featured-title">Episode ${episode.id}: ${episode.title}</h1>
+      <p class="featured-summary">${episode.summary}</p>
+      ${buildFeatureActions(episode)}
+      <div class="platform-links">
+        ${createShowLinksMarkup()}
+      </div>
+    </div>
+  `;
+}
+
+function createEpisodeMarkup(episode) {
+  return `
+    <article class="episode-row">
+      <a class="episode-row-link" href="#/episodes/${episode.slug}" data-episode-link="${episode.slug}">
+        <div class="episode-row-main">
+          <span class="episode-row-title">Episode ${episode.id}: ${episode.title}</span>
+          <span class="episode-row-arrow">View</span>
+        </div>
+        <div class="episode-row-meta">
+          <span>${episode.date}</span>
+          <span>${episode.length}</span>
+        </div>
+      </a>
+    </article>
+  `;
+}
+
+function renderEpisodeList() {
+  episodeList.innerHTML = episodes.map(createEpisodeMarkup).join("");
+  archiveStatus.textContent = `Showing ${episodes.length} recent episode${episodes.length === 1 ? "" : "s"}.`;
+}
+
 function buildPlatformMarkup(episode) {
   const links = [
     episode.spotifyUrl
@@ -429,24 +328,40 @@ function buildPlatformMarkup(episode) {
       : "",
     episode.appleUrl
       ? `<a class="platform-link" href="${episode.appleUrl}" target="_blank" rel="noreferrer">Apple Podcasts</a>`
+      : "",
+    episode.externalLink
+      ? `<a class="platform-link" href="${episode.externalLink}" target="_blank" rel="noreferrer">YouTube</a>`
       : ""
   ]
     .filter(Boolean)
     .join("");
 
-  return links ? `<div class="platform-links">${links}</div>` : "";
+  return links;
 }
 
 function renderEpisodeDetail(episode) {
   detailCard.innerHTML = `
     <p class="episode-detail-date">${episode.date}</p>
     <h1 class="episode-detail-title">Episode ${episode.id}: ${episode.title}</h1>
-    <div class="episode-detail-media">
-      ${episode.imageUrl ? `<img class="episode-detail-art" src="${episode.imageUrl}" alt="Artwork for Episode ${episode.id}" />` : ""}
-      ${buildPlatformMarkup(episode)}
-      ${episode.audioUrl ? `<audio class="episode-audio" controls preload="metadata" src="${episode.audioUrl}"></audio>` : ""}
+    <div class="episode-detail-meta">
+      <span>${episode.length}</span>
+      <span>${episode.category}</span>
     </div>
-    <div class="detail-divider"></div>
+    ${
+      episode.imageUrl
+        ? `<img class="episode-detail-art" src="${episode.imageUrl}" alt="Artwork for Episode ${episode.id}" />`
+        : ""
+    }
+    ${
+      buildPlatformMarkup(episode)
+        ? `<div class="episode-detail-actions">${buildPlatformMarkup(episode)}</div>`
+        : ""
+    }
+    ${
+      episode.audioUrl
+        ? `<audio class="episode-audio" controls preload="metadata" src="${episode.audioUrl}"></audio>`
+        : ""
+    }
     <div class="episode-detail-body">
       ${formatParagraphs(episode.fullSummary)}
     </div>
@@ -461,7 +376,6 @@ function renderRoute() {
     heroSection.classList.remove("is-hidden");
     episodesSection.classList.remove("is-hidden");
     aboutSection.classList.remove("is-hidden");
-    listenSection.classList.remove("is-hidden");
     return;
   }
 
@@ -478,11 +392,14 @@ function renderRoute() {
   heroSection.classList.add("is-hidden");
   episodesSection.classList.add("is-hidden");
   aboutSection.classList.add("is-hidden");
-  listenSection.classList.add("is-hidden");
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 window.addEventListener("hashchange", renderRoute);
+
+detailBack.addEventListener("click", () => {
+  window.location.hash = "";
+});
 
 function parseEpisodeItem(item) {
   const title = item.querySelector("title")?.textContent?.trim() || "Untitled episode";
@@ -499,7 +416,7 @@ function parseEpisodeItem(item) {
     item.querySelector("itunes\\:duration, duration")?.textContent?.trim() || "Podcast";
   const date = pubDate
     ? new Date(pubDate).toLocaleDateString("en-US", {
-        month: "long",
+        month: "short",
         day: "numeric",
         year: "numeric"
       })
@@ -577,9 +494,7 @@ async function loadEpisodesFromFeed() {
 
     episodes = parsedEpisodes;
     renderRecentEpisode();
-    renderArchiveCards();
-    renderEpisodeList(searchInput.value);
-    renderListenSection();
+    renderEpisodeList();
     renderRoute();
   } catch (error) {
     archiveStatus.textContent = "Live feed unavailable right now. Showing placeholder episodes.";
@@ -587,5 +502,7 @@ async function loadEpisodesFromFeed() {
   }
 }
 
-loadEpisodesFromFeed();
+renderRecentEpisode();
+renderEpisodeList();
 renderRoute();
+loadEpisodesFromFeed();
