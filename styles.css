@@ -614,7 +614,7 @@ h2 {
 }
 
 .episode-detail-title {
-  width: 100%;
+  width: min(100%, 1040px);
   max-width: none;
   margin: 0;
   font-family: var(--font-display);
@@ -628,11 +628,14 @@ h2 {
 }
 
 .episode-detail-number {
-  display: inline-block;
-  margin-right: 0.28em;
-  font-size: 0.64em;
-  letter-spacing: -0.02em;
-  vertical-align: 0.12em;
+  display: block;
+  margin: 0 0 0.2rem;
+  font-family: var(--font-ui);
+  font-size: clamp(0.72rem, 1.05vw, 0.95rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  color: var(--accent-soft);
 }
 
 .episode-detail-title-text {
@@ -1042,8 +1045,7 @@ h2 {
   .episode-detail-number {
     display: block;
     margin: 0 0 0.18rem;
-    font-size: 0.58em;
-    vertical-align: baseline;
+    font-size: clamp(0.64rem, 2.4vw, 0.82rem);
   }
 
   .episode-detail-body {
