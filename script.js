@@ -470,6 +470,7 @@ function getYouTubeEmbedUrl(episode) {
 
 function renderEpisodeDetail(episode) {
   const embedUrl = getYouTubeEmbedUrl(episode);
+  const platformMarkup = buildPlatformMarkup(episode);
 
   detailCard.innerHTML = `
     <p class="episode-detail-date">${episode.date}</p>
@@ -508,6 +509,7 @@ function renderEpisodeDetail(episode) {
         `
         : ""
     }
+    ${platformMarkup ? `<div class="episode-detail-actions">${platformMarkup}</div>` : ""}
     ${
       embedUrl
         ? `
@@ -528,11 +530,6 @@ function renderEpisodeDetail(episode) {
             </div>
           </section>
         `
-        : ""
-    }
-    ${
-      buildPlatformMarkup(episode)
-        ? `<div class="episode-detail-actions">${buildPlatformMarkup(episode)}</div>`
         : ""
     }
     <div class="episode-detail-body">
