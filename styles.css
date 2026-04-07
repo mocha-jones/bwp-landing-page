@@ -121,6 +121,7 @@ input {
 
 .archive-view,
 .about-section,
+.rate-section,
 .episode-detail-view,
 .about-page {
   min-height: calc(100vh - 4.5rem);
@@ -282,7 +283,7 @@ h2 {
 
 .entry-grid {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(190px, 0.82fr) minmax(190px, 0.82fr);
+  grid-template-columns: minmax(0, 1.7fr) minmax(190px, 0.88fr) minmax(210px, 0.92fr);
   gap: 1rem;
   align-items: stretch;
 }
@@ -318,18 +319,49 @@ h2 {
   margin-left: 0;
 }
 
-.entry-card-library {
+.entry-card-proof {
+  align-items: flex-start;
+  overflow: hidden;
   border: 1px solid rgba(216, 154, 114, 0.16);
   background:
-    linear-gradient(150deg, rgba(216, 154, 114, 0.12), rgba(191, 97, 91, 0.05)),
+    radial-gradient(circle at 85% 20%, rgba(216, 154, 114, 0.24), transparent 34%),
+    linear-gradient(150deg, rgba(216, 154, 114, 0.14), rgba(191, 97, 91, 0.05)),
     rgba(11, 11, 14, 0.46);
 }
 
-.entry-support-copy {
-  margin: 0;
+.entry-proof-kicker,
+.entry-proof-label,
+.entry-proof-action {
+  font-family: var(--font-ui);
+  text-transform: uppercase;
+}
+
+.entry-proof-kicker {
+  color: var(--accent-soft);
+  font-size: 0.55rem;
+  letter-spacing: 0.14em;
+}
+
+.entry-proof-number {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 4vw, 4rem);
+  font-weight: 800;
+  line-height: 0.82;
+  letter-spacing: -0.08em;
+}
+
+.entry-proof-label {
   color: rgba(242, 237, 232, 0.72);
-  font-size: 0.78rem;
-  line-height: 1.5;
+  font-size: 0.56rem;
+  letter-spacing: 0.13em;
+}
+
+.entry-proof-action {
+  display: inline-flex;
+  margin-top: auto;
+  color: var(--accent-copper);
+  font-size: 0.54rem;
+  letter-spacing: 0.12em;
 }
 
 .entry-label,
@@ -907,6 +939,62 @@ h2 {
   margin: 0 0 1rem;
 }
 
+.rate-section {
+  display: grid;
+  gap: 1.1rem;
+  max-width: 58rem;
+  padding-top: 5rem;
+}
+
+.rate-title {
+  max-width: 14ch;
+  font-size: clamp(2.2rem, 6vw, 5rem);
+  line-height: 0.9;
+}
+
+.rate-copy {
+  max-width: 44rem;
+  margin: 0;
+  color: rgba(242, 237, 232, 0.76);
+  font-size: clamp(1rem, 2vw, 1.18rem);
+  line-height: 1.65;
+}
+
+.rate-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.rate-action-card {
+  display: grid;
+  gap: 0.5rem;
+  min-height: 9rem;
+  padding: 1.2rem;
+  border: 1px solid rgba(216, 154, 114, 0.2);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 85% 18%, rgba(216, 154, 114, 0.18), transparent 32%),
+    rgba(11, 11, 14, 0.56);
+}
+
+.rate-action-card span {
+  font-family: var(--font-ui);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-soft);
+}
+
+.rate-action-card strong {
+  align-self: end;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.4vw, 2.3rem);
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -1047,6 +1135,14 @@ h2 {
 
   .episode-detail-view {
     padding-top: 3.4rem;
+  }
+
+  .rate-section {
+    padding-top: 3rem;
+  }
+
+  .rate-actions {
+    grid-template-columns: 1fr;
   }
 
   .episode-player {
