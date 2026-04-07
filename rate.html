@@ -6,17 +6,17 @@
     <title>Rate | Bloody Water Podcast</title>
     <meta
       name="description"
-      content="Rate Bloody Water Podcast on Apple Podcasts or Spotify, or subscribe on YouTube if the show earned the spot."
+      content="Rate Bloody Water Podcast on Apple Podcasts or Spotify, or subscribe on YouTube."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Syncopate:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=Oxanium:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Syncopate:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260406-rate-poster" />
+    <link rel="stylesheet" href="./styles.css?v=20260406-rate-liquid" />
   </head>
-  <body>
+  <body class="rate-body">
     <div class="page-shell">
       <header class="site-header">
         <a class="brand" href="./index.html" aria-label="Bloody Water Podcast home">Bloody Water Podcast</a>
@@ -27,17 +27,13 @@
       </header>
 
       <main class="rate-page">
-        <section class="rate-section">
+        <section class="rate-section" aria-labelledby="rate-title">
           <div class="rate-medallion" aria-label="Five star rating">
-            <span class="rate-wreath" aria-hidden="true">‹</span>
             <span class="rate-stars" aria-hidden="true">★★★★★</span>
-            <span class="rate-wreath" aria-hidden="true">›</span>
+            <span class="rate-kicker">Established 2020 · 341+ Episodes</span>
           </div>
-          <p class="eyebrow">Established 2020 · 300+ episodes</p>
-          <h1 class="rate-title">If it earned the slot, rate it.</h1>
-          <p class="rate-copy">
-            Five stars feed the algorithm. Subs do too. If Bloody Water is in the rotation, send the signal.
-          </p>
+          <h1 class="rate-title" id="rate-title">If the show delivers, let us know.</h1>
+          <p class="rate-copy">Five stars on Apple or Spotify. Subscribe on YouTube.</p>
 
           <div class="rate-actions" aria-label="Rate or subscribe to Bloody Water Podcast">
             <a
@@ -46,6 +42,7 @@
               target="_blank"
               rel="noreferrer"
             >
+              <img class="rate-platform-logo rate-platform-logo-apple" src="./assets/apple-podcasts-logo-white.svg" alt="" />
               <span>Apple</span>
               <strong>5 Stars</strong>
             </a>
@@ -55,6 +52,7 @@
               target="_blank"
               rel="noreferrer"
             >
+              <img class="rate-platform-logo rate-platform-logo-spotify" src="./assets/spotify-logo-white.svg" alt="" />
               <span>Spotify</span>
               <strong>5 Stars</strong>
             </a>
@@ -64,6 +62,7 @@
               target="_blank"
               rel="noreferrer"
             >
+              <img class="rate-platform-logo rate-platform-logo-youtube" src="./assets/youtube-logo-white.png" alt="" />
               <span>YouTube</span>
               <strong>Subscribe</strong>
             </a>
