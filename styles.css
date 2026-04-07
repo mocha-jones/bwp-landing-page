@@ -1078,6 +1078,9 @@ h2 {
   letter-spacing: -0.045em;
   color: #f0ece4;
   text-align: center;
+  text-shadow:
+    0 0.08em 0.18em rgba(0, 0, 0, 0.42),
+    0 0 2.6rem rgba(0, 0, 0, 0.28);
   text-wrap: balance;
 }
 
@@ -1165,7 +1168,11 @@ h2 {
   max-height: 1.55rem;
 }
 
-.rate-action-card span {
+.rate-action-card strong span {
+  display: block;
+}
+
+.rate-action-card > span {
   position: relative;
   z-index: 1;
   font-family: var(--font-ui);
@@ -1176,8 +1183,8 @@ h2 {
   transition: color 160ms ease;
 }
 
-.rate-action-card:hover span,
-.rate-action-card:focus-visible span {
+.rate-action-card:hover > span,
+.rate-action-card:focus-visible > span {
   color: #0b0b0d;
 }
 
