@@ -268,6 +268,16 @@ function getEpisodeDetailTitleMarkup(episode) {
   return `<span class="episode-detail-number">#${rawId}</span><span class="episode-detail-title-text">${episode.title}</span>`;
 }
 
+function getArchiveCardTitleMarkup(episode) {
+  const rawId = String(episode.id || "").trim();
+
+  if (!rawId || rawId.toLowerCase() === "episode") {
+    return `<span class="archive-card-title-text">${episode.title}</span>`;
+  }
+
+  return `<span class="archive-card-number">#${rawId}</span><span class="archive-card-title-text">${episode.title}</span>`;
+}
+
 function getEpisodePlayerTitleMarkup(episode) {
   const rawId = String(episode.id || "").trim();
 
@@ -366,7 +376,7 @@ function createArchiveCardMarkup(episode) {
       <div class="archive-card-content">
         <p class="archive-card-date">${formatArchiveDate(episode.date)}</p>
         <a href="#/episodes/${episode.slug}">
-          <h2 class="archive-card-title">${getEpisodeDisplayLabel(episode)}</h2>
+          <h2 class="archive-card-title">${getArchiveCardTitleMarkup(episode)}</h2>
         </a>
         <p class="archive-card-summary">${summary}</p>
         <div class="archive-card-actions">
