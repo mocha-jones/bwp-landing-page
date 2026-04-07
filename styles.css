@@ -234,7 +234,7 @@ h2 {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin-top: 1rem;
 }
 
 .platform-cta {
@@ -281,9 +281,10 @@ h2 {
 }
 
 .entry-grid {
-  justify-content: space-between;
-  align-items: stretch;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(190px, 0.82fr) minmax(190px, 0.82fr);
   gap: 1rem;
+  align-items: stretch;
 }
 
 .entry-card {
@@ -291,8 +292,6 @@ h2 {
   flex-direction: column;
   justify-content: space-between;
   gap: 1rem;
-  flex: 0 0 52%;
-  width: auto;
   min-height: 146px;
   padding: 1.15rem 1.3rem 1rem;
   border-radius: 18px;
@@ -314,11 +313,23 @@ h2 {
 }
 
 .entry-card-archive {
-  flex: 0 0 24%;
-  width: auto;
   min-height: 146px;
   justify-content: center;
   margin-left: 0;
+}
+
+.entry-card-library {
+  border: 1px solid rgba(216, 154, 114, 0.16);
+  background:
+    linear-gradient(150deg, rgba(216, 154, 114, 0.12), rgba(191, 97, 91, 0.05)),
+    rgba(11, 11, 14, 0.46);
+}
+
+.entry-support-copy {
+  margin: 0;
+  color: rgba(242, 237, 232, 0.72);
+  font-size: 0.78rem;
+  line-height: 1.5;
 }
 
 .entry-label,
@@ -978,6 +989,7 @@ h2 {
 
   .platform-cta-band {
     grid-template-columns: 1fr;
+    margin-top: 0.9rem;
   }
 
   .platform-cta {
@@ -986,6 +998,7 @@ h2 {
   }
 
   .entry-grid {
+    grid-template-columns: 1fr;
     gap: 0.9rem;
   }
 
