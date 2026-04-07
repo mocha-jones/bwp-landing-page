@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -118,6 +118,32 @@ async function fetchJson(url) {
   return response.json();
 }
 
+async function fetchOptionalText(url) {
+  try {
+    return await fetchText(url);
+  } catch (error) {
+    console.warn(`Skipping ${url}: ${error.message}`);
+    return "";
+  }
+}
+
+async function fetchOptionalJson(url) {
+  try {
+    return await fetchJson(url);
+  } catch (error) {
+    console.warn(`Skipping ${url}: ${error.message}`);
+    return {};
+  }
+}
+
+async function loadExistingLinks() {
+  try {
+    return JSON.parse(await readFile(outputPath, "utf8"));
+  } catch {
+    return {};
+  }
+}
+
 function decodeHtml(value) {
   return value
     .replace(/&#x27;/g, "'")
@@ -130,6 +156,10 @@ function decodeHtml(value) {
 }
 
 function parseAppleLinks(html) {
+  if (!html) {
+    return {};
+  }
+
   const match = html.match(
     /<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/
   );
@@ -171,6 +201,10 @@ function parseAppleLookupLinks(payload) {
 }
 
 function parseSpotifyLinks(html) {
+  if (!html) {
+    return {};
+  }
+
   const regex =
     /<a href="\/episode\/([^"]+)"><h4[^>]*>([\s\S]*?)<\/h4><\/a>/g;
   const links = {};
@@ -189,6 +223,10 @@ function parseSpotifyLinks(html) {
 }
 
 function parseRedCircleTitles(xml) {
+  if (!xml) {
+    return [];
+  }
+
   const itemRegex = /<item>([\s\S]*?)<\/item>/g;
   const titles = [];
   let itemMatch;
@@ -210,6 +248,10 @@ function parseRedCircleTitles(xml) {
 }
 
 function parseYouTubeChannelLinks(html) {
+  if (!html) {
+    return {};
+  }
+
   const rendererRegex =
     /"videoId":"([^"]+)"[\s\S]{0,1400}?"title":\{"runs":\[\{"text":"([^"]+)"/g;
   const links = {};
@@ -261,6 +303,10 @@ function parseYouTubeSearchLinks(html) {
 }
 
 function parseYouTubeLinks(xml) {
+  if (!xml) {
+    return {};
+  }
+
   const entryRegex = /<entry>([\s\S]*?)<\/entry>/g;
   const links = {};
   let entryMatch;
@@ -367,13 +413,14 @@ function alignLinksToFeedTitles(feedTitles, { appleLinks, spotifyLinks, youtubeL
 }
 
 async function main() {
+  const existingLinks = await loadExistingLinks();
   const [redcircleXml, appleHtml, appleLookupPayload, spotifyHtml, youtubeXml, youtubeChannelHtml] = await Promise.all([
-    fetchText(redcircleFeedUrl),
-    fetchText(appleShowUrl),
-    fetchJson(appleLookupUrl),
-    fetchText(spotifyShowUrl),
-    fetchText(youtubeFeedUrl),
-    fetchText(youtubeChannelVideosUrl)
+    fetchOptionalText(redcircleFeedUrl),
+    fetchOptionalText(appleShowUrl),
+    fetchOptionalJson(appleLookupUrl),
+    fetchOptionalText(spotifyShowUrl),
+    fetchOptionalText(youtubeFeedUrl),
+    fetchOptionalText(youtubeChannelVideosUrl)
   ]);
 
   const feedTitles = parseRedCircleTitles(redcircleXml);
@@ -395,12 +442,16 @@ async function main() {
       ...youtubeSearchLinks
     }
   });
+  const outputLinks = {
+    ...existingLinks,
+    ...merged
+  };
 
   await mkdir(dataDir, { recursive: true });
-  await writeFile(outputPath, `${JSON.stringify(merged, null, 2)}\n`, "utf8");
+  await writeFile(outputPath, `${JSON.stringify(outputLinks, null, 2)}\n`, "utf8");
 
   console.log(
-    `Wrote ${Object.keys(merged).length} episode platform link entries to ${outputPath}`
+    `Wrote ${Object.keys(outputLinks).length} episode platform link entries to ${outputPath}`
   );
 }
 
