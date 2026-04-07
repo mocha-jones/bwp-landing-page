@@ -945,7 +945,7 @@ h2 {
   overflow: visible;
   display: grid;
   place-items: start center;
-  padding: clamp(1.25rem, 4vw, 3.5rem) 0 clamp(2rem, 7vw, 5rem);
+  padding: clamp(1.75rem, 4vw, 4.5rem) 0 clamp(2.5rem, 7vw, 6rem);
 }
 
 .rate-page::before,
@@ -959,8 +959,8 @@ h2 {
 }
 
 .rate-page::before {
-  width: min(80vw, 42rem);
-  height: min(80vw, 42rem);
+  width: min(96vw, 58rem);
+  height: min(96vw, 58rem);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -970,8 +970,8 @@ h2 {
 }
 
 .rate-page::after {
-  width: min(64vw, 34rem);
-  height: min(64vw, 34rem);
+  width: min(76vw, 48rem);
+  height: min(76vw, 48rem);
   top: 55%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(8deg);
@@ -985,8 +985,8 @@ h2 {
   display: grid;
   grid-template-rows: auto auto 1fr auto auto;
   gap: 0;
-  width: min(100%, 30rem);
-  min-height: min(30rem, calc(100vh - 8rem));
+  width: min(100%, 43rem);
+  min-height: min(43rem, calc(100vh - 7rem));
   aspect-ratio: 1 / 1;
   padding: 0;
   border: 1px solid rgba(255, 230, 170, 0.48);
@@ -994,8 +994,8 @@ h2 {
   overflow: hidden;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.025) 38%, rgba(255, 226, 160, 0.08)),
-    repeating-linear-gradient(90deg, rgba(255, 230, 170, 0.055) 0 1px, transparent 1px 3.2rem),
-    repeating-linear-gradient(0deg, rgba(255, 230, 170, 0.04) 0 1px, transparent 1px 3.2rem),
+    repeating-linear-gradient(90deg, rgba(255, 230, 170, 0.055) 0 1px, transparent 1px 4rem),
+    repeating-linear-gradient(0deg, rgba(255, 230, 170, 0.04) 0 1px, transparent 1px 4rem),
     rgba(8, 8, 10, 0.66);
   box-shadow:
     0 0 64px rgba(247, 216, 137, 0.12),
@@ -1032,7 +1032,7 @@ h2 {
 
 .rate-section .eyebrow {
   margin: 0;
-  padding: 0.9rem clamp(1rem, 4vw, 1.35rem);
+  padding: 1rem clamp(1.1rem, 4vw, 1.75rem);
   border-bottom: 1px solid rgba(255, 230, 170, 0.24);
   color: rgba(248, 217, 130, 0.76);
 }
@@ -1043,7 +1043,7 @@ h2 {
   gap: 0.55rem;
   width: 100%;
   justify-content: space-between;
-  padding: 1rem clamp(1rem, 4vw, 1.35rem);
+  padding: 1.15rem clamp(1.1rem, 4vw, 1.75rem);
   border: 0;
   border-bottom: 1px solid rgba(255, 230, 170, 0.36);
   border-radius: 0;
@@ -1055,7 +1055,7 @@ h2 {
 
 .rate-stars {
   font-family: var(--font-ui);
-  font-size: clamp(0.68rem, 1.1vw, 0.82rem);
+  font-size: clamp(0.74rem, 1.1vw, 0.95rem);
   letter-spacing: 0.18em;
   line-height: 1;
   text-shadow: none;
@@ -1069,21 +1069,21 @@ h2 {
 }
 
 .rate-title {
-  max-width: 10ch;
-  padding: clamp(1rem, 4vw, 1.35rem) clamp(1rem, 4vw, 1.35rem) 0;
+  max-width: 11ch;
+  padding: clamp(1.25rem, 4vw, 1.9rem) clamp(1.1rem, 4vw, 1.75rem) 0;
   align-self: start;
-  font-size: clamp(2rem, 5vw, 3.45rem);
+  font-size: clamp(2.4rem, 6.4vw, 5.1rem);
   line-height: 0.86;
   text-wrap: balance;
 }
 
 .rate-copy {
-  max-width: 24rem;
+  max-width: 32rem;
   margin: 0;
-  padding: 0 clamp(1rem, 4vw, 1.35rem) clamp(1rem, 4vw, 1.35rem);
+  padding: 0 clamp(1.1rem, 4vw, 1.75rem) clamp(1.1rem, 4vw, 1.75rem);
   align-self: end;
   color: rgba(242, 237, 232, 0.82);
-  font-size: clamp(0.86rem, 1.6vw, 0.98rem);
+  font-size: clamp(0.95rem, 1.6vw, 1.12rem);
   line-height: 1.5;
 }
 
@@ -1100,8 +1100,8 @@ h2 {
   display: grid;
   align-content: space-between;
   gap: 0.45rem;
-  min-height: 5.2rem;
-  padding: 0.9rem;
+  min-height: 6.8rem;
+  padding: 1.1rem;
   border: 0;
   border-right: 1px solid rgba(255, 230, 170, 0.24);
   border-radius: 0;
@@ -1140,7 +1140,7 @@ h2 {
 
 .rate-action-card span {
   font-family: var(--font-ui);
-  font-size: 0.48rem;
+  font-size: 0.55rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: rgba(248, 217, 130, 0.86);
@@ -1154,7 +1154,7 @@ h2 {
 
 .rate-action-card strong {
   font-family: var(--font-display);
-  font-size: clamp(1.1rem, 2vw, 1.55rem);
+  font-size: clamp(1.35rem, 2.4vw, 2.1rem);
   line-height: 0.92;
   text-transform: uppercase;
 }
@@ -1306,7 +1306,7 @@ h2 {
   }
 
   .rate-section {
-    width: min(100%, 23rem);
+    width: min(100%, 29rem);
     min-height: auto;
     aspect-ratio: auto;
   }
