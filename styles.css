@@ -318,24 +318,21 @@ h2 {
 
 .platform-cta-badge {
   display: block;
-  width: auto;
+  width: min(14rem, 72%);
   height: auto;
-  max-width: min(15rem, 72%);
-  max-height: 3.65rem;
   object-fit: contain;
 }
 
 .platform-cta-badge-youtube {
-  max-width: min(12.5rem, 66%);
+  width: min(12.5rem, 66%);
 }
 
 .platform-cta-badge-spotify {
-  max-width: min(14rem, 72%);
+  width: min(14rem, 72%);
 }
 
 .platform-cta-badge-apple {
-  max-width: min(16rem, 78%);
-  max-height: 3.65rem;
+  width: min(15.5rem, 78%);
 }
 
 .entry-grid {
