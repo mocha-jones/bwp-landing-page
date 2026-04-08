@@ -810,21 +810,21 @@ h2 {
 
 .platform-button-logo {
   display: block;
-  width: 8.8rem;
+  width: 7.8rem;
   height: auto;
   object-fit: contain;
 }
 
 .platform-button-youtube .platform-button-logo {
-  width: 7.9rem;
+  width: 7rem;
 }
 
 .platform-button-spotify .platform-button-logo {
-  width: 8.8rem;
+  width: 7.8rem;
 }
 
 .platform-button-apple .platform-button-logo {
-  width: 9.6rem;
+  width: 8.5rem;
 }
 
 .episode-player {
