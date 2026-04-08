@@ -1608,7 +1608,7 @@ body[data-view="landing"] {
 }
 
 .site-header {
-  padding: 0.75rem 0 1.05rem;
+  padding: 0.75rem 3.45rem 1.05rem 0;
 }
 
 .brand {
@@ -2195,6 +2195,10 @@ body[data-view="landing"] .site-header * {
     font-size: 1rem;
   }
 
+  .site-header {
+    padding-right: 3.45rem;
+  }
+
   .landing-view {
     padding: 28px;
     border-radius: 4px;
@@ -2291,6 +2295,10 @@ body[data-view="landing"] .site-header * {
     min-height: 2.55rem;
     padding-left: 2.9rem;
     font-size: 0.88rem;
+  }
+
+  .site-header {
+    padding-right: 2.9rem;
   }
 
   .brand::before {
