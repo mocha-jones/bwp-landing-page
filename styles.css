@@ -517,34 +517,45 @@ h2 {
 
 .archive-hero {
   margin: 1.4rem calc(50% - 50vw) 0;
-  padding: 2.2rem 0 4rem;
+  padding: 2.2rem 0;
   background:
-    radial-gradient(circle at 18% 18%, rgba(216, 154, 114, 0.28), transparent 32%),
-    linear-gradient(100deg, #3b2528 0%, #6f3435 52%, #9a5f45 100%);
+    radial-gradient(circle at 18% 50%, rgba(200, 121, 26, 0.18), transparent 24rem),
+    #1c1a18;
+  border-bottom: 1px solid #2e2b28;
   position: relative;
 }
 
 .archive-hero::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 32px;
-  background: var(--bg);
-  clip-path: polygon(0 0, 100% 18%, 100% 100%, 0 100%);
+  display: none;
 }
 
 .archive-hero-row {
   width: min(calc(100% - 2rem), 1080px);
   margin: 0 auto;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 2rem;
+}
+
+.archive-title-block {
+  display: grid;
+  gap: 0.42rem;
+}
+
+.archive-kicker {
+  margin: 0;
+  color: #c8791a;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .archive-title {
   margin: 0;
+  color: #f0ece4;
   font-size: clamp(1.8rem, 2.2vw, 2.4rem);
 }
 
@@ -552,18 +563,22 @@ h2 {
   display: flex;
   align-items: center;
   width: min(100%, 290px);
-  border: 2px solid rgba(242, 216, 198, 0.5);
-  border-radius: 999px;
-  background: rgba(47, 25, 27, 0.28);
+  border: 1px solid #2e2b28;
+  border-radius: 0;
+  background: #242220;
   padding: 0 1rem;
 }
 
 .archive-search::before {
-  content: "⌕";
-  font-size: 0.92rem;
-  line-height: 1;
-  color: rgba(242, 216, 198, 0.82);
+  content: "";
+  width: 16px;
+  height: 16px;
   margin-right: 0.8rem;
+  background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11' cy='11' r='7' stroke='%23C8791A' stroke-width='2'/%3E%3Cpath d='M16.5 16.5L21 21' stroke='%23C8791A' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E") center / 16px 16px no-repeat;
+}
+
+.archive-search:focus-within {
+  border-color: #c8791a;
 }
 
 .archive-search input {
@@ -571,13 +586,13 @@ h2 {
   border: 0;
   outline: 0;
   background: transparent;
-  color: rgba(255, 246, 239, 0.94);
+  color: #f0ece4;
   min-height: 2.6rem;
   font-size: 0.9rem;
 }
 
 .archive-search input::placeholder {
-  color: rgba(242, 216, 198, 0.72);
+  color: rgba(240, 236, 228, 0.4);
 }
 
 .archive-grid-shell {
@@ -588,7 +603,8 @@ h2 {
 
 .archive-status {
   margin: 0 0 1.3rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: #c8791a;
+  font-weight: 700;
 }
 
 .archive-list {
@@ -1406,7 +1422,7 @@ h2 {
   }
 
   .archive-hero {
-    padding: 1.5rem 0 3.5rem;
+    padding: 1.5rem 0;
   }
 
   .archive-grid-shell {
