@@ -519,8 +519,9 @@ h2 {
   margin: 1.4rem calc(50% - 50vw) 0;
   padding: 2.2rem 0;
   background:
-    radial-gradient(circle at 18% 50%, rgba(200, 121, 26, 0.18), transparent 24rem),
-    #1c1a18;
+    radial-gradient(circle at 18% 50%, rgba(200, 121, 26, 0.28), transparent 24rem),
+    #222018;
+  border-top: 2px solid #c8791a;
   border-bottom: 1px solid #2e2b28;
   position: relative;
 }
@@ -563,7 +564,7 @@ h2 {
   display: flex;
   align-items: center;
   width: min(100%, 290px);
-  border: 1px solid #2e2b28;
+  border: 1px solid rgba(200, 121, 26, 0.4);
   border-radius: 0;
   background: #242220;
   padding: 0 1rem;
