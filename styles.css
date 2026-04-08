@@ -1646,7 +1646,6 @@ body[data-view="landing"] {
 
 .landing-view *,
 body[data-view="landing"] .site-header * {
-  border-radius: 0 !important;
   box-shadow: none !important;
   text-shadow: none !important;
 }
@@ -1655,9 +1654,9 @@ body[data-view="landing"] .site-header * {
   position: relative;
   overflow: hidden;
   min-height: auto;
-  padding: clamp(1rem, 1.5vw, 1.35rem);
+  padding: 28px;
   border: 1px solid var(--line);
-  border-radius: 0;
+  border-radius: 4px;
   background:
     radial-gradient(circle at 71% 48%, rgba(200, 121, 26, 0.22), transparent 24rem),
     linear-gradient(90deg, rgba(28, 26, 24, 0.88), rgba(36, 34, 32, 0.58)),
@@ -1758,7 +1757,7 @@ body[data-view="landing"] .site-header * {
 .entry-grid,
 .platform-cta-band {
   border: 1px solid var(--line);
-  border-radius: 0;
+  border-radius: 4px;
   background: #1c1a18;
   box-shadow: none;
   backdrop-filter: none;
@@ -1766,14 +1765,14 @@ body[data-view="landing"] .site-header * {
 
 .entry-grid {
   grid-template-columns: minmax(0, 1.4fr) minmax(220px, 0.82fr) minmax(230px, 0.78fr);
-  margin-top: 1px;
+  margin-top: 16px;
 }
 
 .entry-card {
   min-height: 12.4rem;
-  padding: clamp(1.15rem, 2vw, 1.5rem);
+  padding: 28px;
   border-right: 1px solid var(--line);
-  border-radius: 0;
+  border-radius: 4px;
   background: #1c1a18;
   box-shadow: none;
   transition: background-color 160ms ease, color 160ms ease;
@@ -1787,6 +1786,7 @@ body[data-view="landing"] .site-header * {
 .entry-card-archive {
   align-items: center;
   justify-content: center;
+  text-align: center;
 }
 
 .entry-card-archive .entry-label {
@@ -1876,6 +1876,7 @@ body[data-view="landing"] .site-header * {
 }
 
 .entry-proof-label {
+  margin-top: 8px;
   color: rgba(240, 236, 228, 0.48);
   font-size: 0.62rem;
   font-weight: 700;
@@ -1891,13 +1892,14 @@ body[data-view="landing"] .site-header * {
 }
 
 .platform-cta-band {
-  margin-top: 1px;
+  margin-top: 16px;
 }
 
 .platform-cta {
-  min-height: 9rem;
+  min-height: 90px;
+  padding: 28px;
   border-right: 1px solid var(--line);
-  border-radius: 0;
+  border-radius: 4px;
   background: #1c1a18;
   box-shadow: none;
   transition: background-color 160ms ease;
@@ -1948,8 +1950,8 @@ body[data-view="landing"] .site-header * {
   }
 
   .landing-view {
-    padding: 0.95rem;
-    border-radius: 0;
+    padding: 28px;
+    border-radius: 4px;
   }
 
   .landing-stage {
@@ -1994,6 +1996,7 @@ body[data-view="landing"] .site-header * {
 
   .entry-card {
     min-height: 10.5rem;
+    padding: 28px;
   }
 
   .entry-card:last-child,
