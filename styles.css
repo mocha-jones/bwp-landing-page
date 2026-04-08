@@ -1783,19 +1783,19 @@ body[data-view="landing"] .site-header * {
 }
 
 .landing-summary {
-  margin: 0.9rem 0 0;
+  margin: 1.05rem 0 0;
   max-width: 34rem;
-  font-size: 17px;
-  line-height: 1.45;
-  color: var(--muted);
-  font-weight: 400;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(240, 236, 228, 0.66);
 }
 
 .entry-grid,
 .platform-cta-band {
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  background: #1c1a18;
+  background: transparent;
   box-shadow: none;
   backdrop-filter: none;
 }
@@ -1803,12 +1803,13 @@ body[data-view="landing"] .site-header * {
 .entry-grid {
   grid-template-columns: minmax(0, 1.4fr) minmax(220px, 0.82fr) minmax(230px, 0.78fr);
   margin-top: 16px;
+  gap: 12px;
 }
 
 .entry-card {
   min-height: 12.4rem;
   padding: 28px;
-  border-right: 1px solid var(--line);
+  border: 1px solid var(--line);
   border-radius: 4px;
   background: #1c1a18;
   box-shadow: none;
@@ -1953,21 +1954,17 @@ body[data-view="landing"] .site-header * {
 
 .platform-cta-band {
   margin-top: 16px;
+  gap: 12px;
 }
 
 .platform-cta {
   min-height: 90px;
   padding: 28px;
-  border: 1px solid transparent;
-  border-right-color: var(--line);
+  border: 1px solid var(--line);
   border-radius: 4px;
   background: #1c1a18;
   box-shadow: none;
   transition: border-color 150ms ease;
-}
-
-.platform-cta:last-child {
-  border-right-color: transparent;
 }
 
 .platform-cta:hover,
@@ -2044,29 +2041,23 @@ body[data-view="landing"] .site-header * {
   }
 
   .landing-summary {
-    font-size: 1rem;
+    font-size: 0.68rem;
   }
 
   .entry-grid,
   .platform-cta-band {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .entry-card,
   .platform-cta {
     width: 100%;
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
   }
 
   .entry-card {
     min-height: 10.5rem;
     padding: 28px;
-  }
-
-  .entry-card:last-child,
-  .platform-cta:last-child {
-    border-bottom: 0;
   }
 
   .entry-card-archive .entry-label {
