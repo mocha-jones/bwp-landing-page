@@ -278,6 +278,16 @@ function getArchiveCardTitleMarkup(episode) {
   return `<span class="archive-card-number">#${rawId}</span><span class="archive-card-title-text">${episode.title}</span>`;
 }
 
+function getEntryTitleMarkup(episode) {
+  const rawId = String(episode.id || "").trim();
+
+  if (!rawId || rawId.toLowerCase() === "episode") {
+    return `<span class="entry-title-text">${episode.title}</span>`;
+  }
+
+  return `<span class="entry-number">#${rawId}</span><span class="entry-title-text">${episode.title}</span>`;
+}
+
 function getEpisodePlayerTitleMarkup(episode) {
   const rawId = String(episode.id || "").trim();
 
@@ -293,7 +303,7 @@ function renderLanding() {
   const playUrl = episode.audioUrl ? `#/episodes/${episode.slug}` : "#recent";
 
   recentEntryCopy.innerHTML = `
-    <p class="entry-title">${getEpisodeDisplayLabel(episode)}</p>
+    <p class="entry-title">${getEntryTitleMarkup(episode)}</p>
     <div class="entry-meta">
       <span>${formatDisplayDate(episode.date)}</span>
       <span>${episode.length}</span>

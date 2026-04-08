@@ -1814,6 +1814,21 @@ body[data-view="landing"] .site-header * {
   line-height: 1.08;
 }
 
+.entry-number {
+  display: block;
+  margin: 0 0 0.42rem;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+.entry-title-text {
+  display: block;
+}
+
 .entry-copy {
   gap: 0.78rem;
 }
