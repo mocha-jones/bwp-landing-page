@@ -1323,7 +1323,7 @@ h2 {
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
   .page-shell {
     width: min(calc(100% - 1.25rem), var(--max));
   }
@@ -2175,7 +2175,7 @@ body[data-view="landing"] .site-header * {
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
   .page-shell {
     width: min(calc(100% - 1rem), 1320px);
   }
