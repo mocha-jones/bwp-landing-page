@@ -2229,7 +2229,9 @@ body[data-view="landing"] .site-header * {
   }
 
   .landing-summary {
-    font-size: 0.7rem;
+    font-size: 0.58rem;
+    letter-spacing: 0.11em;
+    white-space: nowrap;
   }
 
   .entry-grid,
