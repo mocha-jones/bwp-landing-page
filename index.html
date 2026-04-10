@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=Inter:wght@400;600;700;800;900&family=Inter+Tight:wght@800;900&family=JetBrains+Mono:wght@500;700&family=Oxanium:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Syncopate:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260408-mobile-tagline" />
+    <link rel="stylesheet" href="./styles.css?v=20260409-runtime-fallback" />
   </head>
   <body data-view="landing">
     <div class="page-shell">
@@ -42,7 +42,19 @@
             <div class="entry-grid">
               <article class="entry-card entry-card-recent" id="recent-entry-card">
                 <span class="entry-label">Recent Episode</span>
-                <div class="entry-copy" id="recent-entry-copy"></div>
+                <div class="entry-copy" id="recent-entry-copy">
+                  <p class="entry-title">
+                    <span class="entry-number">#345</span>
+                    <span class="entry-title-text">UFC 327: Jiri Prochazka vs Carlos Ulberg | A Vacant Belt and Unfinished Business</span>
+                  </p>
+                  <div class="entry-meta">
+                    <span>Apr 9, 2026</span>
+                    <span>51 min</span>
+                  </div>
+                  <div class="entry-actions">
+                    <a class="entry-button entry-button-primary" href="#/episodes/345-ufc-327-jiri-prochazka-vs-carlos-ulberg-a-vacant-belt-and-unfinished-business">Open Latest Episode</a>
+                  </div>
+                </div>
               </article>
 
               <a class="entry-card entry-card-archive" href="#archive">
@@ -95,6 +107,7 @@
         </section>
 
         <section class="archive-view is-hidden" id="archive-view">
+          <span id="archive" class="visually-hidden" aria-hidden="true">Archive</span>
           <div class="archive-hero">
             <div class="archive-hero-row">
               <div class="archive-title-block">
@@ -125,6 +138,6 @@
       </main>
     </div>
 
-    <script src="./script.js?v=20260406-rating-badge"></script>
+    <script src="./script.js?v=20260409-direct-open-fix"></script>
   </body>
 </html>

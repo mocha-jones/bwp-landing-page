@@ -110,6 +110,7 @@ let episodes = fallbackEpisodes;
 let archiveQuery = "";
 
 const recentEntryCopy = document.getElementById("recent-entry-copy");
+const recentEntryCard = document.getElementById("recent-entry-card");
 const archiveStatus = document.getElementById("archive-status");
 const archiveGrid = document.getElementById("archive-grid");
 const archiveSearchInput = document.getElementById("archive-search-input");
@@ -300,6 +301,21 @@ function getEpisodePlayerTitleMarkup(episode) {
 
 function renderLanding() {
   const episode = episodes[0];
+
+  if (!recentEntryCopy) {
+    return;
+  }
+
+  if (!episode) {
+    recentEntryCopy.innerHTML = `
+      <p class="entry-title"><span class="entry-title-text">Latest episode is syncing now.</span></p>
+      <div class="entry-actions">
+        <a class="entry-button entry-button-primary" href="#archive">Browse Episodes</a>
+      </div>
+    `;
+    return;
+  }
+
   const playUrl = episode.audioUrl ? `#/episodes/${episode.slug}` : "#recent";
 
   recentEntryCopy.innerHTML = `
@@ -509,10 +525,13 @@ function renderEpisodeDetail(episode) {
                 <span class="episode-player-kicker">Audio</span>
                 <span class="episode-player-name">${getEpisodePlayerTitleMarkup(episode)}</span>
               </div>
-              <div class="episode-player-time">
-                <span class="episode-player-current">0:00</span>
-                <span class="episode-player-separator">/</span>
-                <span class="episode-player-duration">${episode.length}</span>
+              <div class="episode-player-meta">
+                <button class="episode-player-speed" type="button" aria-label="Playback speed 1x">1x</button>
+                <div class="episode-player-time">
+                  <span class="episode-player-current">0:00</span>
+                  <span class="episode-player-separator">/</span>
+                  <span class="episode-player-duration">${episode.length}</span>
+                </div>
               </div>
             </div>
             <input
@@ -553,6 +572,9 @@ function renderEpisodeDetail(episode) {
         : ""
     }
     <div class="episode-detail-body">
+      <div class="episode-detail-body-header">
+        <span class="episode-detail-body-label">Description</span>
+      </div>
       ${formatParagraphs(episode.fullSummary)}
     </div>
   `;
@@ -571,6 +593,20 @@ function setupEpisodeAudioPlayer() {
   const progress = detailCard.querySelector(".episode-player-progress");
   const currentTimeLabel = detailCard.querySelector(".episode-player-current");
   const durationLabel = detailCard.querySelector(".episode-player-duration");
+  const speedButton = detailCard.querySelector(".episode-player-speed");
+  const playbackRates = [1, 1.25, 1.5, 2];
+
+  const formatPlaybackRate = (rate) => `${Number.isInteger(rate) ? rate : rate.toFixed(2).replace(/0$/, "")}x`;
+
+  const syncPlaybackRate = () => {
+    if (!speedButton) {
+      return;
+    }
+
+    const speedLabel = formatPlaybackRate(audio.playbackRate || 1);
+    speedButton.textContent = speedLabel;
+    speedButton.setAttribute("aria-label", `Playback speed ${speedLabel}`);
+  };
 
   const syncButton = () => {
     const isPlaying = !audio.paused && !audio.ended;
@@ -609,6 +645,13 @@ function setupEpisodeAudioPlayer() {
     syncTimeline();
   });
 
+  speedButton?.addEventListener("click", () => {
+    const currentIndex = playbackRates.findIndex((rate) => Math.abs(rate - audio.playbackRate) < 0.01);
+    const nextRate = playbackRates[(currentIndex + 1 + playbackRates.length) % playbackRates.length];
+    audio.playbackRate = nextRate;
+    syncPlaybackRate();
+  });
+
   audio.addEventListener("loadedmetadata", syncTimeline);
   audio.addEventListener("timeupdate", syncTimeline);
   audio.addEventListener("play", syncButton);
@@ -621,6 +664,7 @@ function setupEpisodeAudioPlayer() {
 
   syncTimeline();
   syncButton();
+  syncPlaybackRate();
 }
 
 function stopEpisodeAudio() {
@@ -632,6 +676,27 @@ function stopEpisodeAudio() {
 
   audio.pause();
   audio.currentTime = 0;
+}
+
+function openLatestEpisode(event) {
+  event?.preventDefault();
+
+  const episode = episodes[0];
+
+  if (!episode) {
+    window.location.hash = "#archive";
+    return;
+  }
+
+  const targetHash = episode.audioUrl ? `#/episodes/${episode.slug}` : "#recent";
+
+  renderEpisodeDetail(episode);
+  showView("detail");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  if (window.location.hash !== targetHash) {
+    window.location.hash = targetHash;
+  }
 }
 
 function showView(view) {
@@ -684,6 +749,24 @@ window.addEventListener("hashchange", renderRoute);
 archiveSearchInput.addEventListener("input", (event) => {
   archiveQuery = event.target.value;
   renderArchiveGrid();
+});
+
+recentEntryCopy?.addEventListener("click", (event) => {
+  const trigger = event.target.closest(".entry-button");
+
+  if (!trigger) {
+    return;
+  }
+
+  openLatestEpisode(event);
+});
+
+recentEntryCard?.addEventListener("keydown", (event) => {
+  if (event.key !== "Enter" && event.key !== " ") {
+    return;
+  }
+
+  openLatestEpisode(event);
 });
 
 function parseEpisodeItem(item) {
