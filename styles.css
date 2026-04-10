@@ -2365,7 +2365,8 @@ body[data-view="landing"] .site-header * {
 }
 
 .platform-cta-badge-youtube {
-  max-height: 0.92rem;
+  width: 4.05rem;
+  max-height: none;
 }
 
 .platform-cta-badge-spotify {
