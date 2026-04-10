@@ -52,7 +52,11 @@
                     <span>51 min</span>
                   </div>
                   <div class="entry-actions">
-                    <a class="entry-button entry-button-primary" href="#/episodes/345-ufc-327-jiri-prochazka-vs-carlos-ulberg-a-vacant-belt-and-unfinished-business">Open Latest Episode</a>
+                    <a
+                      class="entry-button entry-button-primary"
+                      href="https://www.youtube.com/watch?v=maiFy7yGPpY"
+                      onclick="if (window.__bwpOpenLatestFallback) { return window.__bwpOpenLatestFallback(event); }"
+                    >Open Latest Episode</a>
                   </div>
                 </div>
               </article>
@@ -138,6 +142,46 @@
       </main>
     </div>
 
-    <script src="./script.js?v=20260409-direct-open-fix"></script>
+    <script>
+      (function () {
+        const landingView = document.getElementById("landing-view");
+        const archiveView = document.getElementById("archive-view");
+        const detailView = document.getElementById("episode-detail-view");
+
+        function showFallbackView(view) {
+          if (!landingView || !archiveView || !detailView) {
+            return;
+          }
+
+          landingView.classList.toggle("is-hidden", view !== "landing");
+          archiveView.classList.toggle("is-hidden", view !== "archive");
+          detailView.classList.toggle("is-hidden", view !== "detail");
+          document.body.dataset.view = view;
+        }
+
+        function routeFallback() {
+          if (window.location.hash === "#archive") {
+            showFallbackView("archive");
+            return;
+          }
+
+          showFallbackView("landing");
+        }
+
+        window.__bwpOpenLatestFallback = function (event) {
+          if (typeof window.openLatestEpisode === "function") {
+            event.preventDefault();
+            window.openLatestEpisode(event);
+            return false;
+          }
+
+          return true;
+        };
+
+        window.addEventListener("hashchange", routeFallback);
+        routeFallback();
+      })();
+    </script>
+    <script src="./script.js?v=20260410-fallback-router"></script>
   </body>
 </html>
