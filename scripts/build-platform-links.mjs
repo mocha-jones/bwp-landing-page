@@ -412,6 +412,14 @@ function alignLinksToFeedTitles(feedTitles, { appleLinks, spotifyLinks, youtubeL
   }, {});
 }
 
+function mergePlatformEntries(existingEntry = {}, nextEntry = {}) {
+  return {
+    appleUrl: nextEntry.appleUrl ?? existingEntry.appleUrl,
+    spotifyUrl: nextEntry.spotifyUrl ?? existingEntry.spotifyUrl,
+    youtubeUrl: nextEntry.youtubeUrl ?? existingEntry.youtubeUrl
+  };
+}
+
 async function main() {
   const existingLinks = await loadExistingLinks();
   const [redcircleXml, appleHtml, appleLookupPayload, spotifyHtml, youtubeXml, youtubeChannelHtml] = await Promise.all([
@@ -442,10 +450,11 @@ async function main() {
       ...youtubeSearchLinks
     }
   });
-  const outputLinks = {
-    ...existingLinks,
-    ...merged
-  };
+  const outputLinks = { ...existingLinks };
+
+  for (const [title, links] of Object.entries(merged)) {
+    outputLinks[title] = mergePlatformEntries(existingLinks[title], links);
+  }
 
   await mkdir(dataDir, { recursive: true });
   await writeFile(outputPath, `${JSON.stringify(outputLinks, null, 2)}\n`, "utf8");
