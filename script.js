@@ -108,16 +108,21 @@ const fallbackEpisodes = [
 
 let episodes = fallbackEpisodes;
 let archiveQuery = "";
+let archivePage = 1;
+const ARCHIVE_PAGE_SIZE = 10;
 
 const recentEntryCopy = document.getElementById("recent-entry-copy");
 const recentEntryCard = document.getElementById("recent-entry-card");
 const archiveStatus = document.getElementById("archive-status");
 const archiveGrid = document.getElementById("archive-grid");
+const archivePagination = document.getElementById("archive-pagination");
 const archiveSearchInput = document.getElementById("archive-search-input");
 const landingView = document.getElementById("landing-view");
-const archiveView = document.getElementById("archive-view");
+const archiveView = document.getElementById("archive") || document.getElementById("archive-view");
 const detailView = document.getElementById("episode-detail-view");
 const detailCard = document.getElementById("episode-detail-card");
+const mobileBackButton = document.getElementById("mobile-back-button");
+let lastNonDetailView = document.body.dataset.view || "landing";
 
 function decodeHtmlEntities(value) {
   const parser = new DOMParser();
@@ -416,6 +421,54 @@ function createArchiveCardMarkup(episode) {
   `;
 }
 
+function createArchivePaginationMarkup(currentPage, totalPages) {
+  if (totalPages <= 1) {
+    return "";
+  }
+
+  const previousButton = `
+    <button
+      class="archive-page-button archive-page-nav"
+      type="button"
+      data-page="${currentPage - 1}"
+      ${currentPage === 1 ? "disabled" : ""}
+      aria-label="Go to previous archive page"
+    >
+      Prev
+    </button>
+  `;
+
+  const pageButtons = Array.from({ length: totalPages }, (_, index) => {
+    const page = index + 1;
+
+    return `
+      <button
+        class="archive-page-button${page === currentPage ? " is-active" : ""}"
+        type="button"
+        data-page="${page}"
+        aria-label="Go to archive page ${page}"
+        aria-current="${page === currentPage ? "page" : "false"}"
+      >
+        ${page}
+      </button>
+    `;
+  }).join("");
+
+  const nextButton = `
+    <button
+      class="archive-page-button archive-page-nav"
+      type="button"
+      data-page="${currentPage + 1}"
+      ${currentPage === totalPages ? "disabled" : ""}
+      aria-label="Go to next archive page"
+    >
+      Next
+    </button>
+  `;
+
+  return `${previousButton}${pageButtons}${nextButton}`;
+}
+
 function renderArchiveGrid() {
   const visibleEpisodes = getVisibleEpisodes();
   const query = archiveQuery.trim().toLowerCase();
@@ -427,15 +480,22 @@ function renderArchiveGrid() {
       )
     : visibleEpisodes;
 
-  archiveGrid.innerHTML = filteredEpisodes.map(createArchiveCardMarkup).join("");
-
   if (!filteredEpisodes.length) {
     archiveStatus.textContent = `No episodes found for "${archiveQuery}".`;
     archiveGrid.innerHTML = "";
+    archivePagination.innerHTML = "";
     return;
   }
 
-  archiveStatus.textContent = `Showing ${filteredEpisodes.length} linked episode${filteredEpisodes.length === 1 ? "" : "s"}.`;
+  const totalPages = Math.max(1, Math.ceil(filteredEpisodes.length / ARCHIVE_PAGE_SIZE));
+  archivePage = Math.min(archivePage, totalPages);
+
+  const pageStart = (archivePage - 1) * ARCHIVE_PAGE_SIZE;
+  const pageEpisodes = filteredEpisodes.slice(pageStart, pageStart + ARCHIVE_PAGE_SIZE);
+
+  archiveGrid.innerHTML = pageEpisodes.map(createArchiveCardMarkup).join("");
+  archiveStatus.textContent = "";
+  archivePagination.innerHTML = createArchivePaginationMarkup(archivePage, totalPages);
 }
 
 function buildPlatformLogoLink(href, label, logoClass, logoSrc) {
@@ -699,7 +759,35 @@ function openLatestEpisode(event) {
   }
 }
 
+function syncMobileBackButton(view) {
+  if (!mobileBackButton) {
+    return;
+  }
+
+  if (view === "landing") {
+    mobileBackButton.classList.add("is-hidden");
+    mobileBackButton.textContent = "Back";
+    mobileBackButton.setAttribute("aria-label", "Go back");
+    return;
+  }
+
+  const label =
+    view === "detail"
+      ? lastNonDetailView === "archive"
+        ? "Back to Episodes"
+        : "Back Home"
+      : "Back Home";
+
+  mobileBackButton.classList.remove("is-hidden");
+  mobileBackButton.textContent = label;
+  mobileBackButton.setAttribute("aria-label", label);
+}
+
 function showView(view) {
+  if (view !== "detail") {
+    lastNonDetailView = view;
+  }
+
   if (view !== "detail") {
     stopEpisodeAudio();
   }
@@ -708,6 +796,7 @@ function showView(view) {
   archiveView.classList.toggle("is-hidden", view !== "archive");
   detailView.classList.toggle("is-hidden", view !== "detail");
   document.body.dataset.view = view;
+  syncMobileBackButton(view);
 }
 
 function renderRoute() {
@@ -748,7 +837,33 @@ function renderRoute() {
 window.addEventListener("hashchange", renderRoute);
 archiveSearchInput.addEventListener("input", (event) => {
   archiveQuery = event.target.value;
+  archivePage = 1;
   renderArchiveGrid();
+});
+
+archivePagination?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-page]");
+
+  if (!button || button.disabled) {
+    return;
+  }
+
+  archivePage = Number(button.dataset.page);
+  renderArchiveGrid();
+  archiveView?.scrollIntoView({ block: "start", behavior: "smooth" });
+});
+
+mobileBackButton?.addEventListener("click", () => {
+  const currentView = document.body.dataset.view || "landing";
+
+  if (currentView === "detail") {
+    window.location.hash = lastNonDetailView === "archive" ? "#archive" : "";
+    return;
+  }
+
+  if (currentView === "archive") {
+    window.location.hash = "";
+  }
 });
 
 recentEntryCopy?.addEventListener("click", (event) => {
@@ -862,6 +977,7 @@ async function loadEpisodesFromFeed() {
     }
 
     episodes = parsedEpisodes;
+    archivePage = 1;
     renderLanding();
     renderArchiveGrid();
     renderRoute();
@@ -874,4 +990,5 @@ async function loadEpisodesFromFeed() {
 renderLanding();
 renderArchiveGrid();
 renderRoute();
+syncMobileBackButton(document.body.dataset.view || "landing");
 loadEpisodesFromFeed();

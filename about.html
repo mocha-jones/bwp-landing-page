@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Oxanium:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Syncopate:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260409-runtime-fallback" />
+    <link rel="stylesheet" href="./styles.css?v=20260410-mobile-back-nav" />
   </head>
   <body data-view="about">
     <div class="page-shell">
@@ -25,6 +25,7 @@
           <a href="./about.html" aria-current="page">About</a>
         </nav>
       </header>
+      <button class="mobile-back-button" id="mobile-back-button" type="button">Back</button>
 
       <main class="about-page">
         <section class="about-section">
@@ -67,5 +68,29 @@
         </section>
       </main>
     </div>
+    <script>
+      (function () {
+        const mobileBackButton = document.getElementById("mobile-back-button");
+
+        if (!mobileBackButton) {
+          return;
+        }
+
+        mobileBackButton.addEventListener("click", () => {
+          try {
+            const referrer = document.referrer ? new URL(document.referrer) : null;
+
+            if (referrer && referrer.origin === window.location.origin) {
+              window.history.back();
+              return;
+            }
+          } catch (error) {
+            console.error(error);
+          }
+
+          window.location.href = "./index.html";
+        });
+      })();
+    </script>
   </body>
 </html>

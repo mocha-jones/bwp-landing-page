@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=Inter:wght@400;600;700;800;900&family=Inter+Tight:wght@800;900&family=JetBrains+Mono:wght@500;700&family=Oxanium:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Syncopate:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260409-runtime-fallback" />
+    <link rel="stylesheet" href="./styles.css?v=20260410-mobile-back-nav" />
   </head>
   <body data-view="landing">
     <div class="page-shell">
@@ -25,6 +25,7 @@
           <a href="./about.html">About</a>
         </nav>
       </header>
+      <button class="mobile-back-button is-hidden" id="mobile-back-button" type="button">Back</button>
 
       <main id="top">
         <section class="landing-view" id="landing-view">
@@ -110,12 +111,10 @@
           </div>
         </section>
 
-        <section class="archive-view is-hidden" id="archive-view">
-          <span id="archive" class="visually-hidden" aria-hidden="true">Archive</span>
+        <section class="archive-view is-hidden" id="archive">
           <div class="archive-hero">
             <div class="archive-hero-row">
               <div class="archive-title-block">
-                <p class="archive-kicker">Bloody Water Podcast</p>
                 <h1 class="archive-title">Available Episodes</h1>
               </div>
               <label class="archive-search" for="archive-search-input">
@@ -131,8 +130,9 @@
           </div>
 
           <div class="archive-grid-shell">
-            <p class="archive-status" id="archive-status">Loading episodes from RedCircle...</p>
+            <p class="archive-status" id="archive-status"></p>
             <div class="archive-list" id="archive-grid"></div>
+            <div class="archive-pagination" id="archive-pagination" aria-label="Archive pages"></div>
           </div>
         </section>
 
@@ -145,7 +145,7 @@
     <script>
       (function () {
         const landingView = document.getElementById("landing-view");
-        const archiveView = document.getElementById("archive-view");
+        const archiveView = document.getElementById("archive") || document.getElementById("archive-view");
         const detailView = document.getElementById("episode-detail-view");
 
         function showFallbackView(view) {
@@ -182,6 +182,6 @@
         routeFallback();
       })();
     </script>
-    <script src="./script.js?v=20260410-fallback-router"></script>
+    <script src="./script.js?v=20260410-mobile-back-nav"></script>
   </body>
 </html>
